@@ -15,7 +15,7 @@
           <p class="eyebrow">P Book Club</p>
           <h1>지금의 취향으로<br>딱 맞는 책을 고를 시간.</h1>
           <p id="intro-stats" class="intro-text"></p>
-          <button id="start-button" class="primary-button" type="button" onclick="window.beginBookMatch && window.beginBookMatch()">추천 시작하기</button>
+          <button id="start-button" class="primary-button" type="button" onclick="window.beginBookMatch ? window.beginBookMatch() : document.body.classList.add('boot-failed')">추천 시작하기</button>
         </div>
         <div class="intro-card">
           <div class="intro-chip-row">
@@ -45,7 +45,7 @@
     </main>
   </div>
 
-  <script src="books-data.js"></script>
-  <script src="script.js"></script>
+  <script src="books-data.js?v=20260319b"></script>
+  <script src="script.js?v=20260319b"></script>
 </body>
 </html>
