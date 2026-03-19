@@ -1,22 +1,20 @@
 const rawBooks = Array.isArray(window.bookClubBooks) ? window.bookClubBooks : [];
 
-const members = ["강세영", "김민정", "박수인", "유예림", "유하림"];
-
-const keywordGroups = {
-  warm: ["행복", "위로", "다정", "사랑", "회복", "마음", "용기", "성장", "꽃", "편안"],
-  sharp: ["고통", "상실", "범죄", "불쾌", "악마", "죽음", "가해자", "폭력", "흑역사", "잔인"],
-  strange: ["우주", "외계", "sf", "과학", "디지몬", "프랑켄슈타인", "식물", "미생물", "상상", "환상"],
-  intimate: ["가족", "친구", "동생", "관계", "사람", "우리", "마음", "사랑"],
-  idea: ["철학", "생각", "세계", "이유", "존재", "교양", "과학", "역사", "정치"],
-  civic: ["정치", "사회", "국가", "민주주의", "현실", "역사", "미래", "광주"],
-  breezy: ["재밌", "가볍", "쉽", "입문", "술술", "영업", "준비서"],
-  dense: ["난해", "문학", "문장", "고전", "해석", "작별", "의미"],
-  comforting: ["다정", "행복", "위로", "회복", "용기", "따뜻"],
-  haunting: ["상실", "고통", "멸망", "죽음", "불쾌", "아프"],
-  debate: ["사회", "정치", "철학", "실험", "윤리", "범죄", "현실"],
-  classic: ["고전", "문학", "에세이", "소설", "편지", "심리"],
-  adventurous: ["우주", "모험", "외계", "세계", "식물", "디지몬", "과학"],
-  offbeat: ["불쾌", "악마", "미숫가루", "프랑켄슈타인", "블랙미러", "괴이"]
+const traitGroups = {
+  warm: ["행복", "위로", "다정", "회복", "마음", "사랑", "용기", "편안", "성장"],
+  sharp: ["고통", "상실", "폭력", "범죄", "불쾌", "죽음", "악마", "가해자", "난해"],
+  strange: ["우주", "외계", "sf", "과학", "식물", "디지몬", "상상", "프랑켄슈타인", "모험"],
+  intimate: ["관계", "가족", "친구", "동생", "우리", "사람", "사랑", "마음"],
+  idea: ["생각", "철학", "세계", "의미", "교양", "관점", "역사", "심리", "정치"],
+  civic: ["정치", "사회", "국가", "민주주의", "현실", "미래", "광주", "역사"],
+  breezy: ["가볍", "재밌", "쉽", "술술", "영업", "입문", "교양서"],
+  dense: ["문학", "해석", "고전", "난해", "문장", "작별", "여운"],
+  comforting: ["위로", "회복", "다정", "행복", "용기", "편안"],
+  haunting: ["상실", "고통", "불쾌", "멸망", "죽음", "아프"],
+  debate: ["사회", "정치", "철학", "윤리", "질문", "현실", "실험"],
+  classic: ["고전", "편지", "에세이", "심리", "문학", "소설"],
+  adventurous: ["우주", "외계", "세계", "상상", "과학", "모험", "디지몬"],
+  offbeat: ["악마", "불쾌", "괴이", "블랙미러", "실험", "기묘"]
 };
 
 const genreOverrides = {
@@ -55,143 +53,140 @@ const genreOverrides = {
   "반 고흐, 영혼의 편지": "예술 에세이"
 };
 
-const questions = [
+const questionBlueprints = [
   {
-    id: "vibe",
-    title: "지금 가장 원하는 독서 무드는?",
-    description: "책에서 어떤 온도를 느끼고 싶은지 고르세요.",
+    title: "오늘의 독서 무드는 어느 쪽에 가까워?",
+    description: "지금 마음에 가장 가까운 결을 골라주세요.",
     options: [
       {
-        id: "vibe-warm",
-        title: "부드럽고 다정한 결",
-        description: "마음이 정리되고 조금 편안해졌으면 좋겠다",
-        semantic: { warm: 3, comforting: 2, intimate: 1 }
+        eyebrow: "A",
+        title: "조용히 마음을 덮는 책",
+        copy: "다정하고 부드럽고 오래 곁에 남는 타입",
+        weights: { warm: 3, comforting: 2, intimate: 1 }
       },
       {
-        id: "vibe-sharp",
-        title: "날카롭고 묵직한 결",
-        description: "강한 인상과 밀도 있는 정서를 원한다",
-        semantic: { sharp: 3, haunting: 2, dense: 1 }
+        eyebrow: "B",
+        title: "선명하게 꽂히는 책",
+        copy: "묵직하고 강렬하고 밀도가 높은 타입",
+        weights: { sharp: 3, haunting: 2, dense: 1 }
       },
       {
-        id: "vibe-strange",
-        title: "낯설고 선명한 결",
-        description: "상상력이나 설정의 신선함이 끌린다",
-        semantic: { strange: 3, adventurous: 2, idea: 1 }
+        eyebrow: "C",
+        title: "세계가 열리는 책",
+        copy: "상상력, 설정, 낯선 장치가 끌리는 타입",
+        weights: { strange: 3, adventurous: 2, idea: 1 }
       }
     ]
   },
   {
-    id: "conversation",
-    title: "독서모임에서 어떤 이야기를 더 하고 싶어?",
-    description: "대화의 중심이 될 포인트를 골라보세요.",
+    title: "독서모임에서 어떤 대화를 더 하고 싶어?",
+    description: "책을 읽고 친구들과 나누고 싶은 이야기의 중심을 골라주세요.",
     options: [
       {
-        id: "conversation-intimate",
-        title: "감정과 관계",
-        description: "인물의 마음, 관계 변화, 개인의 상처",
-        semantic: { intimate: 3, warm: 1, comforting: 1 }
+        eyebrow: "A",
+        title: "사람과 감정",
+        copy: "관계, 상처, 회복, 감정선에 더 끌린다",
+        weights: { intimate: 3, warm: 1, comforting: 1 }
       },
       {
-        id: "conversation-idea",
+        eyebrow: "B",
         title: "아이디어와 시선",
-        description: "설정, 개념, 관점의 새로움이 중요하다",
-        semantic: { idea: 3, strange: 1, dense: 1 }
+        copy: "설정, 개념, 새 관점이 있는 책이 좋다",
+        weights: { idea: 3, strange: 1, dense: 1 }
       },
       {
-        id: "conversation-civic",
+        eyebrow: "C",
         title: "사회와 현실",
-        description: "현실과 연결되는 주제, 시대감, 문제의식",
-        semantic: { civic: 3, debate: 2, sharp: 1 }
+        copy: "현실과 맞닿은 문제의식, 시대감이 중요하다",
+        weights: { civic: 3, debate: 2, sharp: 1 }
       }
     ]
   },
   {
-    id: "rhythm",
-    title: "이번에는 어떤 호흡으로 읽고 싶어?",
-    description: "독서 템포와 집중도를 선택하세요.",
+    title: "읽는 호흡은 어느 정도가 좋아?",
+    description: "이번 달 독서 리듬에 가장 맞는 속도를 골라주세요.",
     options: [
       {
-        id: "rhythm-breezy",
-        title: "가볍게 몰입하는 편",
-        description: "비교적 술술 읽히는 쪽이 좋다",
-        semantic: { breezy: 3, warm: 1, adventurous: 1 }
+        eyebrow: "A",
+        title: "술술 읽히는 편",
+        copy: "몰입감 있고 비교적 가볍게 들어가고 싶다",
+        weights: { breezy: 3, warm: 1, adventurous: 1 }
       },
       {
-        id: "rhythm-balanced",
-        title: "적당히 균형 잡힌 편",
-        description: "부담은 적지만 생각거리는 있었으면 좋겠다",
-        semantic: { idea: 2, intimate: 1, debate: 1 }
+        eyebrow: "B",
+        title: "균형 잡힌 편",
+        copy: "부담은 덜하지만 생각할 포인트는 있었으면 좋다",
+        weights: { idea: 2, intimate: 1, debate: 1 }
       },
       {
-        id: "rhythm-dense",
+        eyebrow: "C",
         title: "천천히 곱씹는 편",
-        description: "문장과 주제를 오래 붙잡고 싶다",
-        semantic: { dense: 3, haunting: 1, debate: 1 }
+        copy: "문장과 주제를 오래 붙잡고 읽고 싶다",
+        weights: { dense: 3, haunting: 1, classic: 1 }
       }
     ]
   },
   {
-    id: "aftertaste",
-    title: "다 읽고 남았으면 하는 잔향은?",
-    description: "책을 덮은 뒤의 느낌을 상상해보세요.",
+    title: "다 읽고 난 뒤 어떤 잔향이 남으면 좋겠어?",
+    description: "책을 덮은 다음의 감각을 상상해보세요.",
     options: [
       {
-        id: "aftertaste-comforting",
-        title: "위로와 회복",
-        description: "마음이 조금 정돈되는 느낌",
-        semantic: { comforting: 3, warm: 2, intimate: 1 }
+        eyebrow: "A",
+        title: "위로와 정돈",
+        copy: "마음이 조금 부드러워지고 정리되는 느낌",
+        weights: { comforting: 3, warm: 2, intimate: 1 }
       },
       {
-        id: "aftertaste-debate",
-        title: "계속 얘기하고 싶은 질문",
-        description: "모임에서 의견이 갈려도 좋다",
-        semantic: { debate: 3, civic: 1, idea: 1 }
+        eyebrow: "B",
+        title: "계속 대화하고 싶은 질문",
+        copy: "독서모임에서 의견이 갈려도 재밌는 느낌",
+        weights: { debate: 3, idea: 1, civic: 1 }
       },
       {
-        id: "aftertaste-haunting",
+        eyebrow: "C",
         title: "쉽게 안 지워지는 여운",
-        description: "오래 남는 감각이나 이미지가 좋다",
-        semantic: { haunting: 3, sharp: 2, dense: 1 }
+        copy: "오래 남는 이미지와 감각이 중요하다",
+        weights: { haunting: 3, sharp: 2, dense: 1 }
       }
     ]
   },
   {
-    id: "selection",
-    title: "오늘의 픽 성향은 어느 쪽이야?",
-    description: "안정적인 선택인지, 낯선 선택인지 골라주세요.",
+    title: "오늘의 선택은 어느 쪽이 더 끌려?",
+    description: "안정적인 선택인지, 취향 강한 선택인지 골라주세요.",
     options: [
       {
-        id: "selection-classic",
-        title: "검증된 쪽이 좋다",
-        description: "평점도 괜찮고 실패 확률이 낮은 책",
-        semantic: { classic: 2, crowd: 3 }
+        eyebrow: "A",
+        title: "검증된 쪽",
+        copy: "실패 확률이 낮고 반응이 좋았던 책이 좋다",
+        weights: { classic: 2, warm: 1, crowd: 3 }
       },
       {
-        id: "selection-adventurous",
-        title: "조금 새로워도 좋다",
-        description: "낯선 설정이나 분위기도 환영",
-        semantic: { adventurous: 3, strange: 1, offbeat: 1 }
+        eyebrow: "B",
+        title: "새로운 쪽",
+        copy: "낯선 세계나 아이디어도 적극적으로 환영",
+        weights: { adventurous: 3, strange: 1, idea: 1 }
       },
       {
-        id: "selection-offbeat",
-        title: "취향 강한 책도 좋다",
-        description: "호불호가 있어도 기억에 남는 책",
-        semantic: { offbeat: 3, sharp: 1, niche: 3 }
+        eyebrow: "C",
+        title: "취향 강한 쪽",
+        copy: "호불호가 있어도 인상적인 책이면 된다",
+        weights: { offbeat: 3, sharp: 1, niche: 3 }
       }
     ]
   }
 ];
 
-const quizForm = document.querySelector("#quiz-form");
-const recommendButton = document.querySelector("#recommend-button");
-const resetButton = document.querySelector("#reset-button");
-const resultCard = document.querySelector("#result-card");
-const bookshelf = document.querySelector("#bookshelf");
-const statsCopy = document.querySelector("#stats-copy");
-const progressText = document.querySelector("#progress-text");
 const archiveCount = document.querySelector("#archive-count");
 const memberCount = document.querySelector("#member-count");
+const statsCopy = document.querySelector("#stats-copy");
+const progressPill = document.querySelector("#progress-pill");
+const questionStage = document.querySelector("#question-stage");
+const resultStage = document.querySelector("#result-stage");
+const bookshelf = document.querySelector("#bookshelf");
+
+let currentNode = null;
+let currentPath = [];
+let currentDepth = 0;
 
 function slugify(value) {
   return value
@@ -204,16 +199,28 @@ function countMatches(text, terms) {
   return terms.reduce((score, term) => score + (text.includes(term) ? 1 : 0), 0);
 }
 
-function toBase3(value, length) {
-  const digits = new Array(length).fill(0);
-  let current = value;
+function buildProfile(book) {
+  const text = `${book.title} ${book.author} ${book.reviews.map((review) => review.review || "").join(" ")}`.toLowerCase();
+  const average = Number(book.averageRating) || 0;
 
-  for (let index = length - 1; index >= 0; index -= 1) {
-    digits[index] = current % 3;
-    current = Math.floor(current / 3);
-  }
-
-  return digits;
+  return {
+    warm: countMatches(text, traitGroups.warm),
+    sharp: countMatches(text, traitGroups.sharp),
+    strange: countMatches(text, traitGroups.strange),
+    intimate: countMatches(text, traitGroups.intimate),
+    idea: countMatches(text, traitGroups.idea),
+    civic: countMatches(text, traitGroups.civic),
+    breezy: countMatches(text, traitGroups.breezy),
+    dense: countMatches(text, traitGroups.dense),
+    comforting: countMatches(text, traitGroups.comforting),
+    haunting: countMatches(text, traitGroups.haunting),
+    debate: countMatches(text, traitGroups.debate),
+    classic: countMatches(text, traitGroups.classic) + (average >= 4 ? 2 : 0),
+    adventurous: countMatches(text, traitGroups.adventurous),
+    offbeat: countMatches(text, traitGroups.offbeat),
+    crowd: average >= 4.1 ? 3 : average >= 3.6 ? 2 : 1,
+    niche: average <= 3 ? 3 : average <= 3.4 ? 2 : 0
+  };
 }
 
 function inferGenre(book) {
@@ -225,36 +232,13 @@ function inferGenre(book) {
 
   if (countMatches(text, ["우주", "sf", "과학", "외계", "별"]) >= 1) return "SF";
   if (countMatches(text, ["정치", "사회", "민주주의", "역사"]) >= 1) return "사회 교양";
+  if (countMatches(text, ["문학", "고전", "해석"]) >= 1) return "문학";
   if (countMatches(text, ["에세이", "행복", "심리"]) >= 1) return "에세이";
-  if (countMatches(text, ["범죄", "불쾌", "악마", "스릴"]) >= 1) return "스릴러";
+  if (countMatches(text, ["범죄", "악마", "불쾌"]) >= 1) return "스릴러";
   return "소설";
 }
 
-function buildProfile(book) {
-  const text = `${book.title} ${book.author} ${book.reviews.map((review) => review.review || "").join(" ")}`.toLowerCase();
-  const averageRating = Number(book.averageRating) || 0;
-
-  return {
-    warm: countMatches(text, keywordGroups.warm),
-    sharp: countMatches(text, keywordGroups.sharp),
-    strange: countMatches(text, keywordGroups.strange),
-    intimate: countMatches(text, keywordGroups.intimate),
-    idea: countMatches(text, keywordGroups.idea),
-    civic: countMatches(text, keywordGroups.civic),
-    breezy: countMatches(text, keywordGroups.breezy),
-    dense: countMatches(text, keywordGroups.dense),
-    comforting: countMatches(text, keywordGroups.comforting),
-    haunting: countMatches(text, keywordGroups.haunting),
-    debate: countMatches(text, keywordGroups.debate),
-    classic: countMatches(text, keywordGroups.classic) + (averageRating >= 4 ? 2 : 0),
-    adventurous: countMatches(text, keywordGroups.adventurous),
-    offbeat: countMatches(text, keywordGroups.offbeat),
-    crowd: averageRating >= 4.1 ? 3 : averageRating >= 3.6 ? 2 : 1,
-    niche: averageRating <= 3 ? 3 : averageRating <= 3.4 ? 2 : 0
-  };
-}
-
-function topReview(book) {
+function getTopReview(book) {
   return [...book.reviews].sort((left, right) => (right.rating || 0) - (left.rating || 0))[0] || null;
 }
 
@@ -265,309 +249,305 @@ function buildSummary(book) {
     .map((review) => review.review)
     .filter(Boolean);
 
-  if (reviews.length === 0) {
-    return "리뷰 데이터가 아직 충분하지 않습니다.";
-  }
-
-  return `${reviews.join(" / ")} 라는 인상이 남은 책입니다.`;
+  return reviews.length ? `${reviews.join(" / ")} 라는 인상이 남은 책입니다.` : "리뷰 데이터가 아직 충분하지 않습니다.";
 }
 
-function buildMood(profile) {
-  const moodPairs = [
-    ["warm", "부드럽고 다정한 무드"],
-    ["sharp", "묵직하고 선명한 무드"],
-    ["strange", "낯설고 신선한 무드"],
-    ["dense", "오래 곱씹는 무드"]
-  ];
-
-  return [...moodPairs].sort((left, right) => profile[right[0]] - profile[left[0]])[0][1];
-}
-
-function buildBookRoute(index) {
-  return toBase3(index, questions.length);
-}
-
-const books = rawBooks.map((book, index) => {
-  const profile = buildProfile(book);
-  const highlightedReview = topReview(book);
-
+const books = rawBooks.map((book) => {
+  const topReview = getTopReview(book);
   return {
     ...book,
     id: slugify(`${book.year}-${book.title}`),
+    profile: buildProfile(book),
     genre: inferGenre(book),
-    profile,
-    mood: buildMood(profile),
     summary: buildSummary(book),
-    route: buildBookRoute(index),
-    reviewCount: book.reviews.length,
-    topReview: highlightedReview?.review || "",
-    topReviewer: highlightedReview?.member || "",
-    topRating: highlightedReview?.rating || Number(book.averageRating) || 0
+    topReview: topReview?.review || "",
+    topReviewer: topReview?.member || "",
+    topRating: topReview?.rating || Number(book.averageRating) || 0
   };
 });
 
-function renderQuestions() {
-  quizForm.innerHTML = questions
-    .map((question, questionIndex) => {
-      const optionsMarkup = question.options
-        .map((option, optionIndex) => `
-          <label class="option-card" for="${option.id}">
-            <input id="${option.id}" data-question-index="${questionIndex}" data-option-index="${optionIndex}" type="radio" name="${question.id}" value="${option.id}">
-            <span class="option-label">
-              <strong>${option.title}</strong>
-              <span>${option.description}</span>
-            </span>
-          </label>
-        `)
-        .join("");
+function branchPreference(book, blueprint) {
+  return blueprint.options
+    .map((option, index) => {
+      const score = Object.entries(option.weights).reduce((sum, [key, weight]) => {
+        return sum + ((book.profile[key] || 0) * weight);
+      }, 0);
 
-      return `
-        <fieldset class="question-card">
-          <legend class="question-title">${questionIndex + 1}. ${question.title}</legend>
-          <p class="question-copy">${question.description}</p>
-          <div class="option-list">${optionsMarkup}</div>
-        </fieldset>
-      `;
+      return { index, score };
     })
-    .join("");
+    .sort((left, right) => right.score - left.score)
+    .map((entry) => entry.index);
 }
 
-function getSelections() {
-  return questions.map((question, questionIndex) => {
-    const selected = quizForm.querySelector(`input[name="${question.id}"]:checked`);
+function splitBooks(items, depth) {
+  const blueprint = questionBlueprints[depth];
+  const groups = [[], [], []];
+  const targetSize = Math.ceil(items.length / 3);
 
-    if (!selected) {
-      return null;
-    }
-
-    const optionIndex = Number(selected.dataset.optionIndex);
-    return {
-      questionIndex,
-      optionIndex,
-      question,
-      option: question.options[optionIndex]
-    };
+  const ranked = [...items].sort((left, right) => {
+    const leftPrefs = branchPreference(left, blueprint);
+    const rightPrefs = branchPreference(right, blueprint);
+    const leftDelta = Math.abs(
+      Object.entries(blueprint.options[leftPrefs[0]].weights).reduce((sum, [key, weight]) => sum + ((left.profile[key] || 0) * weight), 0) -
+      Object.entries(blueprint.options[leftPrefs[1]].weights).reduce((sum, [key, weight]) => sum + ((left.profile[key] || 0) * weight), 0)
+    );
+    const rightDelta = Math.abs(
+      Object.entries(blueprint.options[rightPrefs[0]].weights).reduce((sum, [key, weight]) => sum + ((right.profile[key] || 0) * weight), 0) -
+      Object.entries(blueprint.options[rightPrefs[1]].weights).reduce((sum, [key, weight]) => sum + ((right.profile[key] || 0) * weight), 0)
+    );
+    return rightDelta - leftDelta;
   });
+
+  ranked.forEach((book) => {
+    const preferences = branchPreference(book, blueprint);
+    let assigned = false;
+
+    preferences.forEach((preferredIndex) => {
+      if (!assigned && groups[preferredIndex].length < targetSize) {
+        groups[preferredIndex].push(book);
+        assigned = true;
+      }
+    });
+
+    if (!assigned) {
+      const smallest = groups
+        .map((group, index) => ({ index, size: group.length }))
+        .sort((left, right) => left.size - right.size)[0];
+      groups[smallest.index].push(book);
+    }
+  });
+
+  return groups.filter((group) => group.length > 0);
 }
 
-function semanticScore(book, selections) {
-  let score = (Number(book.averageRating) || 0) * 8;
+function buildTree(items, depth = 0, path = []) {
+  if (items.length === 1 || depth >= questionBlueprints.length) {
+    return {
+      type: "leaf",
+      book: items[0],
+      path
+    };
+  }
 
-  selections.forEach(({ option }) => {
-    Object.entries(option.semantic).forEach(([key, weight]) => {
-      score += (book.profile[key] || 0) * weight;
+  const groups = splitBooks(items, depth);
+
+  if (groups.length === 1) {
+    return {
+      type: "leaf",
+      book: groups[0][0],
+      path
+    };
+  }
+
+  const blueprint = questionBlueprints[depth];
+
+  return {
+    type: "question",
+    depth,
+    path,
+    blueprint,
+    options: groups.map((group, index) => ({
+      ...blueprint.options[index],
+      child: buildTree(group, depth + 1, [...path, index]),
+      count: group.length
+    }))
+  };
+}
+
+const decisionTree = buildTree(books);
+
+function updateProgress() {
+  const currentStep = currentNode?.type === "leaf" ? questionBlueprints.length : (currentNode?.depth || 0) + 1;
+  progressPill.textContent = `${currentStep} / ${questionBlueprints.length}`;
+}
+
+function renderQuestion(node) {
+  currentNode = node;
+  currentDepth = node.depth;
+  questionStage.classList.remove("hidden");
+  resultStage.classList.add("hidden");
+
+  const title = node.blueprint.title;
+  const description = node.blueprint.description;
+
+  questionStage.innerHTML = `
+    <div class="question-card">
+      <span class="step-index">Step ${node.depth + 1}</span>
+      <h3 class="question-title">${title}</h3>
+      <p class="question-description">${description}</p>
+      <div class="option-list">
+        ${node.options.map((option, index) => `
+          <button class="option-button" type="button" data-branch-index="${index}">
+            <span class="option-eyebrow">${option.eyebrow} · ${option.count}권</span>
+            <span class="option-title">${option.title}</span>
+            <span class="option-copy">${option.copy}</span>
+          </button>
+        `).join("")}
+      </div>
+      <div class="stage-actions">
+        ${currentPath.length > 0 ? '<button id="back-button" class="ghost-button" type="button">이전 질문</button>' : '<button id="restart-button" class="ghost-button" type="button">처음으로</button>'}
+      </div>
+    </div>
+  `;
+
+  questionStage.querySelectorAll(".option-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const branchIndex = Number(button.dataset.branchIndex);
+      currentPath.push(branchIndex);
+      const next = node.options[branchIndex].child;
+      if (next.type === "leaf") {
+        renderResult(next.book);
+      } else {
+        renderQuestion(next);
+      }
     });
   });
 
-  return score;
-}
+  const backButton = document.querySelector("#back-button");
+  if (backButton) {
+    backButton.addEventListener("click", goBack);
+  }
 
-function routeScore(book, selections) {
-  return selections.reduce((score, selection, index) => {
-    return score + (book.route[index] === selection.optionIndex ? 120 : 0);
-  }, 0);
-}
+  const restartButton = document.querySelector("#restart-button");
+  if (restartButton) {
+    restartButton.addEventListener("click", resetExperience);
+  }
 
-function getMatches(selections) {
-  return books
-    .map((book) => {
-      const semantic = semanticScore(book, selections);
-      const route = routeScore(book, selections);
-      return {
-        book,
-        score: semantic + route,
-        semantic,
-        route
-      };
-    })
-    .sort((left, right) => right.score - left.score);
-}
-
-function explainChoice(selection) {
-  return selection.option.title;
-}
-
-function buildReasons(match, selections) {
-  const { book, route, semantic } = match;
-  const reasons = [];
-
-  reasons.push(`선택한 답변과의 매칭 점수가 높았습니다. 질문 조합과의 경로 일치 점수는 ${route}점입니다.`);
-
-  const rankedTraits = [
-    ["warm", "다정함과 회복감이 남는 리뷰가 많습니다."],
-    ["sharp", "강한 인상과 묵직한 정서를 기대할 수 있습니다."],
-    ["strange", "설정이나 상상력의 신선함이 살아 있습니다."],
-    ["intimate", "감정과 관계를 중심으로 이야기하기 좋습니다."],
-    ["idea", "아이디어와 관점을 두고 대화가 길게 이어질 만합니다."],
-    ["civic", "현실과 사회에 대한 대화 포인트가 분명합니다."],
-    ["dense", "천천히 곱씹을수록 재미가 커지는 타입입니다."],
-    ["comforting", "읽고 나서 정서적으로 정돈되는 느낌이 있습니다."],
-    ["haunting", "쉽게 사라지지 않는 여운이 강합니다."],
-    ["debate", "독서모임에서 의견이 갈릴 만한 소재가 살아 있습니다."]
-  ]
-    .map(([key, copy]) => ({ key, copy, value: book.profile[key] || 0 }))
-    .filter((item) => item.value > 0)
-    .sort((left, right) => right.value - left.value)
-    .slice(0, 2);
-
-  rankedTraits.forEach((item) => reasons.push(item.copy));
-
-  reasons.push(`의미 기반 점수는 ${Math.round(semantic)}점으로 계산되었습니다.`);
-
-  return reasons;
-}
-
-function buildAlternativeList(matches) {
-  return matches.slice(1, 4).map((item) => {
-    return `<li>${item.book.title} · ${Number(item.book.averageRating).toFixed(2)}점</li>`;
-  }).join("");
-}
-
-function renderResult(matches, selections) {
-  const [bestMatch] = matches;
-  const { book } = bestMatch;
-  const reasons = buildReasons(bestMatch, selections);
-  const selectedLabels = selections.map((selection) => explainChoice(selection)).join(" · ");
-  const confidence = Math.min(99, Math.round((bestMatch.score / 680) * 100));
-
-  resultCard.classList.remove("empty");
-  resultCard.innerHTML = `
-    <div class="pill-row">
-      <span class="tag">Best Match</span>
-      <span class="route-pill">${selectedLabels}</span>
-    </div>
-
-    <div class="result-header">
-      <div>
-        <h3 class="result-title">${book.title}</h3>
-        <p class="result-subtitle">${book.author || "저자 정보 미정"} · ${book.year}</p>
-      </div>
-      <div class="score-panel">
-        <strong>${Number(book.averageRating).toFixed(2)}</strong>
-        <span>club rating</span>
-      </div>
-    </div>
-
-    <div class="meta-grid">
-      <div class="meta-card">
-        <strong>장르</strong>
-        <span>${book.genre}</span>
-      </div>
-      <div class="meta-card">
-        <strong>무드</strong>
-        <span>${book.mood}</span>
-      </div>
-      <div class="meta-card">
-        <strong>추천 강도</strong>
-        <span>${confidence}%</span>
-      </div>
-    </div>
-
-    <div class="result-stack">
-      <section class="result-module">
-        <h3>왜 이 책이 나왔나</h3>
-        <ul class="reason-list">
-          ${reasons.map((reason) => `<li>${reason}</li>`).join("")}
-        </ul>
-      </section>
-
-      <section class="result-module">
-        <h3>모임에 남은 인상</h3>
-        <p class="result-copy">${book.summary}</p>
-      </section>
-
-      <section class="result-module">
-        <h3>대표 한줄 평</h3>
-        <p class="result-quote">${book.topReview || "아직 대표 리뷰가 없습니다."}</p>
-        <p class="review-credit">${book.topReviewer ? `${book.topReviewer} · ${Number(book.topRating).toFixed(1)}점` : ""}</p>
-      </section>
-
-      <section class="result-module">
-        <h3>다른 후보</h3>
-        <ol class="alt-list">
-          ${buildAlternativeList(matches)}
-        </ol>
-      </section>
-
-      <div class="match-pill-row">
-        <span class="match-pill">리뷰 ${book.reviewCount}개 반영</span>
-        <span class="match-pill">총점 ${Math.round(bestMatch.score)}점</span>
-        <span class="match-pill">50권 전체 중 추천</span>
-      </div>
-    </div>
-  `;
-}
-
-function showIncompleteMessage() {
-  resultCard.classList.remove("empty");
-  resultCard.innerHTML = `
-    <div class="result-module">
-      <h3>질문이 아직 남아 있어</h3>
-      <p class="result-copy">다섯 문항에 모두 답해야 추천 경로가 완성됩니다.</p>
-    </div>
-  `;
-}
-
-function resetQuiz() {
-  quizForm.reset();
   updateProgress();
-  resultCard.className = "result-card empty";
-  resultCard.innerHTML = "<p class=\"empty-state\">다섯 질문에 답하면 여기에서 추천 결과를 보여줍니다.</p>";
+}
+
+function findNodeByPath(path) {
+  let node = decisionTree;
+
+  for (const index of path) {
+    if (node.type !== "question") {
+      break;
+    }
+    node = node.options[index].child;
+  }
+
+  return node;
+}
+
+function getSiblingBooks(targetBookId) {
+  return books
+    .filter((book) => book.id !== targetBookId)
+    .sort((left, right) => Number(right.averageRating) - Number(left.averageRating))
+    .slice(0, 3);
+}
+
+function renderResult(book) {
+  currentNode = { type: "leaf", book };
+  questionStage.classList.add("hidden");
+  resultStage.classList.remove("hidden");
+  progressPill.textContent = "Done";
+
+  const alternatives = getSiblingBooks(book.id);
+
+  resultStage.innerHTML = `
+    <div class="result-card">
+      <span class="step-index">Result</span>
+      <div class="result-header">
+        <div>
+          <h3 class="result-book-title">${book.title}</h3>
+          <p class="meta-line">${book.author || "저자 정보 미정"} · ${book.year} · ${book.genre}</p>
+        </div>
+        <div class="score-box">
+          <strong>${Number(book.averageRating).toFixed(2)}</strong>
+          <span>club score</span>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <section class="result-module">
+          <h3>추천 이유</h3>
+          <ul>
+            <li>지금까지 고른 답변 흐름이 이 책이 속한 최종 분기와 일치했습니다.</li>
+            <li>이 테스트는 50권 각각이 따로 도착하는 리프 구조로 만들어져 있습니다.</li>
+            <li>${book.summary}</li>
+          </ul>
+        </section>
+
+        <section class="result-module">
+          <h3>대표 한줄 평</h3>
+          <p class="result-quote">${book.topReview || "대표 한줄 평 준비 중입니다."}</p>
+          <p class="meta-line">${book.topReviewer ? `${book.topReviewer} · ${Number(book.topRating).toFixed(1)}점` : ""}</p>
+        </section>
+
+        <section class="result-module">
+          <h3>다른 후보</h3>
+          <ol>
+            ${alternatives.map((item) => `<li>${item.title} · ${Number(item.averageRating).toFixed(2)}점</li>`).join("")}
+          </ol>
+        </section>
+      </div>
+
+      <div class="chip-row">
+        <span class="result-chip">50권 중 정확한 단일 결과</span>
+        <span class="result-chip">리뷰 ${book.reviews.length}개 반영</span>
+        <span class="result-chip">마지막 경로 길이 ${currentPath.length}단계</span>
+      </div>
+
+      <div class="stage-actions">
+        <button id="retry-button" class="solid-button" type="button">다시 테스트하기</button>
+        <button id="back-from-result" class="ghost-button" type="button">이전 질문으로</button>
+      </div>
+    </div>
+  `;
+
+  document.querySelector("#retry-button").addEventListener("click", resetExperience);
+  document.querySelector("#back-from-result").addEventListener("click", goBack);
+}
+
+function goBack() {
+  if (currentPath.length === 0) {
+    renderQuestion(decisionTree);
+    return;
+  }
+
+  currentPath = currentPath.slice(0, -1);
+  const node = findNodeByPath(currentPath);
+  if (node.type === "leaf") {
+    renderResult(node.book);
+  } else {
+    renderQuestion(node);
+  }
+}
+
+function resetExperience() {
+  currentPath = [];
+  renderQuestion(decisionTree);
 }
 
 function renderBookshelf() {
-  const sortedBooks = [...books].sort((left, right) => {
+  const sorted = [...books].sort((left, right) => {
     if (right.year !== left.year) {
       return right.year - left.year;
     }
-
     return Number(right.averageRating) - Number(left.averageRating);
   });
 
-  bookshelf.innerHTML = sortedBooks
-    .map((book) => `
-      <article class="shelf-card">
-        <span class="year-chip">${book.year}</span>
-        <h3>${book.title}</h3>
-        <p>${book.author || "저자 정보 미정"} · ${book.genre}</p>
-        <p>${book.topReview || book.summary}</p>
-        <div class="shelf-meta">
-          <span class="shelf-rating">${Number(book.averageRating).toFixed(2)} / 5</span>
-          <span class="meta-copy">${book.reviewCount} reviews</span>
-        </div>
-      </article>
-    `)
-    .join("");
-}
-
-function updateProgress() {
-  const answeredCount = getSelections().filter(Boolean).length;
-  progressText.textContent = `${answeredCount} / ${questions.length}`;
+  bookshelf.innerHTML = sorted.map((book) => `
+    <article class="book-card">
+      <span class="book-year">${book.year}</span>
+      <h3>${book.title}</h3>
+      <p>${book.author || "저자 정보 미정"} · ${book.genre}</p>
+      <p>${book.topReview || book.summary}</p>
+      <div class="book-meta-row">
+        <span class="book-score">${Number(book.averageRating).toFixed(2)} / 5</span>
+        <span class="meta-line">${book.reviews.length} reviews</span>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderStats() {
   const years = [...new Set(books.map((book) => book.year))].sort((left, right) => left - right);
-
   archiveCount.textContent = `${books.length}권`;
-  memberCount.textContent = `${members.length}명`;
-  statsCopy.textContent = `${years[0]}년부터 ${years[years.length - 1]}년까지 쌓인 ${books.length}권의 기록을 바탕으로, 질문 조합 안에서 50권 전부가 추천될 수 있게 매칭 엔진을 구성했습니다.`;
+  memberCount.textContent = "5명";
+  statsCopy.textContent = `${years[0]}년부터 ${years[years.length - 1]}년까지의 기록을 기반으로, 50권 각각이 최종 결과가 되는 분기 트리로 테스트를 구성했습니다.`;
 }
 
-recommendButton.addEventListener("click", () => {
-  const selections = getSelections();
-
-  if (selections.some((selection) => selection === null)) {
-    showIncompleteMessage();
-    return;
-  }
-
-  renderResult(getMatches(selections), selections);
-});
-
-resetButton.addEventListener("click", resetQuiz);
-quizForm.addEventListener("change", updateProgress);
-
-renderQuestions();
-renderBookshelf();
 renderStats();
-updateProgress();
+renderBookshelf();
+resetExperience();
