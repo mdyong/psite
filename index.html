@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>북클럽 픽 | 질문으로 찾는 책 추천</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">P Book Club Archive</p>
+      <h1>친구들과 읽은 기록으로<br>지금 어울리는 한 권을 찾으세요.</h1>
+      <p class="hero-copy">
+        실제 독서모임에서 남긴 평균 평점과 한줄 평을 바탕으로 만든 질문형 책 추천 사이트입니다.
+        몇 가지 선택지만 고르면 지금 분위기에 맞는 책과 추천 이유를 바로 보여줍니다.
+      </p>
+      <p id="stats-copy" class="hero-meta"></p>
+    </header>
+
+    <main class="layout">
+      <section class="panel question-panel">
+        <div class="panel-head">
+          <p class="section-label">질문</p>
+          <h2>이번에는 어떤 책을 읽고 싶나요?</h2>
+          <p class="panel-copy">객관식 답변을 고르면 모임 데이터와 가장 잘 맞는 책을 계산합니다.</p>
+        </div>
+
+        <form id="quiz-form" class="quiz-form"></form>
+
+        <div class="action-row">
+          <button id="recommend-button" class="primary-button" type="button">책 추천 받기</button>
+          <button id="reset-button" class="ghost-button" type="button">다시 고르기</button>
+        </div>
+      </section>
+
+      <section class="panel result-panel">
+        <div class="panel-head">
+          <p class="section-label">결과</p>
+          <h2>추천 결과</h2>
+          <p class="panel-copy">평균 평점, 대표 리뷰, 왜 맞는지까지 한 번에 확인할 수 있습니다.</p>
+        </div>
+
+        <div id="result-card" class="result-card empty">
+          <p class="empty-state">왼쪽 질문에 답하면 여기에서 추천 결과를 확인할 수 있습니다.</p>
+        </div>
+      </section>
+    </main>
+
+    <section class="panel shelf-panel">
+      <div class="panel-head">
+        <p class="section-label">Archive</p>
+        <h2>독서모임 책장</h2>
+        <p class="panel-copy">지금까지 읽은 책 중 평점이 높았던 책들을 빠르게 둘러보세요.</p>
+      </div>
+      <div id="bookshelf" class="bookshelf"></div>
+    </section>
+  </div>
+
+  <script src="books-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
