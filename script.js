@@ -360,7 +360,7 @@ function renderQuestion(node) {
       <p class="question-description">${node.blueprint.description}</p>
       <div class="option-list">
         ${node.options.map((option, index) => `
-          <button class="option-button" type="button" data-branch-index="${index}">
+          <button class="option-button" type="button" data-branch-index="${index}" onclick="window.selectBranch && window.selectBranch(${index})">
             <span class="option-label-top">
               <span class="option-key">${option.key}</span>
             </span>
@@ -370,7 +370,7 @@ function renderQuestion(node) {
         `).join("")}
       </div>
       <div class="question-actions">
-        ${answerTrail.length ? '<button id="back-button" class="secondary-button" type="button">이전으로</button>' : '<button id="cancel-button" class="secondary-button" type="button">처음으로</button>'}
+        ${answerTrail.length ? '<button id="back-button" class="secondary-button" type="button" onclick="window.goBackStep && window.goBackStep()">이전으로</button>' : '<button id="cancel-button" class="secondary-button" type="button" onclick="window.resetBookMatch && window.resetBookMatch()">처음으로</button>'}
       </div>
     </div>
   `;
@@ -428,9 +428,9 @@ function renderBookshelf() {
       `).join("")}
     </div>
     <div class="bookshelf-pagination">
-      <button id="prev-bookshelf" class="secondary-button" type="button">이전</button>
+      <button id="prev-bookshelf" class="secondary-button" type="button" onclick="window.prevBooksPage && window.prevBooksPage()">이전</button>
       <span class="pagination-copy">${bookshelfPage + 1} / ${totalPages}</span>
-      <button id="next-bookshelf" class="secondary-button" type="button">다음</button>
+      <button id="next-bookshelf" class="secondary-button" type="button" onclick="window.nextBooksPage && window.nextBooksPage()">다음</button>
     </div>
   `;
 }
@@ -498,14 +498,11 @@ function renderResult(book, preserveBookshelfPage = false) {
       </div>
 
       <div class="result-actions">
-        <button id="restart-button" class="primary-button" type="button">다시 해보기</button>
-        <button id="result-back-button" class="secondary-button" type="button">이전 질문으로</button>
+        <button id="restart-button" class="primary-button" type="button" onclick="window.resetBookMatch && window.resetBookMatch()">다시 해보기</button>
+        <button id="result-back-button" class="secondary-button" type="button" onclick="window.goBackStep && window.goBackStep()">이전 질문으로</button>
       </div>
     </div>
   `;
-
-  document.querySelector("#restart-button").addEventListener("click", resetExperience);
-  document.querySelector("#result-back-button").addEventListener("click", goBack);
   bindBookshelfPagination(book);
 }
 
@@ -517,22 +514,34 @@ function bindBookshelfPagination(book) {
 
   if (prev) {
     prev.disabled = bookshelfPage === 0;
-    prev.addEventListener("click", () => {
-      if (bookshelfPage > 0) {
-        bookshelfPage -= 1;
-        renderResult(book, true);
-      }
-    });
   }
 
   if (next) {
     next.disabled = bookshelfPage >= totalPages - 1;
-    next.addEventListener("click", () => {
-      if (bookshelfPage < totalPages - 1) {
-        bookshelfPage += 1;
-        renderResult(book, true);
-      }
-    });
+  }
+}
+
+function selectBranch(branchIndex) {
+  if (!currentNode || currentNode.type !== "question") {
+    return;
+  }
+
+  const choice = currentNode.options[branchIndex];
+  if (!choice) {
+    return;
+  }
+
+  currentPath.push(branchIndex);
+  answerTrail.push({
+    question: currentNode.blueprint.title,
+    answer: choice.summary.title,
+    copy: choice.summary.copy
+  });
+
+  if (choice.child.type === "leaf") {
+    renderResult(choice.child.book);
+  } else {
+    renderQuestion(choice.child);
   }
 }
 
@@ -564,6 +573,21 @@ function resetExperience() {
   showScreen("intro");
 }
 
+function prevBooksPage() {
+  if (bookshelfPage > 0 && currentNode && currentNode.type === "leaf") {
+    bookshelfPage -= 1;
+    renderResult(currentNode.book, true);
+  }
+}
+
+function nextBooksPage() {
+  const totalPages = Math.ceil(books.length / 6);
+  if (bookshelfPage < totalPages - 1 && currentNode && currentNode.type === "leaf") {
+    bookshelfPage += 1;
+    renderResult(currentNode.book, true);
+  }
+}
+
 function renderIntroStats() {
   const years = [...new Set(books.map((book) => book.year))].sort((a, b) => a - b);
   introStats.textContent = `${years[0]}년부터 ${years[years.length - 1]}년까지 읽은 ${books.length}권의 기록으로 추천을 만듭니다.`;
@@ -592,54 +616,8 @@ renderIntroBackdrop();
 renderIntroStats();
 resetExperience();
 window.beginBookMatch = startExperience;
-
-document.addEventListener("click", (event) => {
-  const rawTarget = event.target;
-  const targetElement = rawTarget instanceof Element ? rawTarget : rawTarget && rawTarget.parentElement ? rawTarget.parentElement : null;
-  const optionButton = targetElement ? targetElement.closest(".option-button") : null;
-  if (optionButton && currentNode && currentNode.type === "question") {
-    event.preventDefault();
-    const branchIndex = Number(optionButton.dataset.branchIndex);
-    const choice = currentNode.options[branchIndex];
-    currentPath.push(branchIndex);
-    answerTrail.push({
-      question: currentNode.blueprint.title,
-      answer: choice.summary.title,
-      copy: choice.summary.copy
-    });
-
-    if (choice.child.type === "leaf") {
-      renderResult(choice.child.book);
-    } else {
-      renderQuestion(choice.child);
-    }
-    return;
-  }
-
-  if (!(targetElement instanceof HTMLElement)) {
-    return;
-  }
-
-  if (targetElement.id === "start-button") {
-    event.preventDefault();
-    startExperience();
-    return;
-  }
-
-  if (targetElement.id === "cancel-button") {
-    event.preventDefault();
-    resetExperience();
-    return;
-  }
-
-  if (targetElement.id === "back-button" || targetElement.id === "result-back-button") {
-    event.preventDefault();
-    goBack();
-    return;
-  }
-
-  if (targetElement.id === "restart-button") {
-    event.preventDefault();
-    resetExperience();
-  }
-});
+window.selectBranch = selectBranch;
+window.goBackStep = goBack;
+window.resetBookMatch = resetExperience;
+window.prevBooksPage = prevBooksPage;
+window.nextBooksPage = nextBooksPage;

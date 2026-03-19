@@ -249,6 +249,7 @@ body {
   margin: 0 auto;
   position: relative;
   z-index: 2;
+  pointer-events: auto;
 }
 
 .progress-meta {
@@ -295,6 +296,7 @@ body {
   margin: 24px auto 0;
   position: relative;
   z-index: 2;
+  pointer-events: auto;
 }
 
 .question-card {
@@ -302,6 +304,9 @@ body {
   padding: 30px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
 }
 
 .step-badge {
@@ -341,6 +346,9 @@ body {
   background: white;
   text-align: left;
   cursor: pointer;
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
   transition: box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
 
@@ -391,6 +399,9 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 24px;
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
 }
 
 .result-card {
