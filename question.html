@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>질문 | P들의 서재</title>
+  <link rel="stylesheet" href="style.css?v=multi1">
+</head>
+<body>
+  <div class="page-shell">
+    <main class="page-card flow-layout">
+      <section class="question-page">
+        <div class="progress-head">
+          <p class="eyebrow">Question Flow</p>
+          <span id="progress-label" class="progress-pill">1 / 5</span>
+        </div>
+        <div class="progress-bar"><span id="progress-fill"></span></div>
+        <div id="question-root" class="question-root"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="books-data.js?v=20260319b"></script>
+  <script src="app-data.js?v=multi1"></script>
+  <script>
+    (function () {
+      var app = window.BookMatchApp;
+      if (!app) return;
+
+      var params = new URLSearchParams(window.location.search);
+      var step = Number(params.get("step") || "0");
+      var answers = app.parseAnswers(params.get("answers"));
+      var state = app.getQuestionState(step, answers);
+
+      if (state.redirect) {
+        window.location.href = state.redirect;
+        return;
+      }
+
+      var label = document.getElementById("progress-label");
+      var fill = document.getElementById("progress-fill");
+      var root = document.getElementById("question-root");
+      label.textContent = (state.step + 1) + " / " + app.questionCount;
+      fill.style.width = (((state.step + 1) / app.questionCount) * 100) + "%";
+
+      var optionsHtml = state.options.map(function (option, index) {
+        return '' +
+          '<a class="option-link" href="' + app.buildNextHref(state.step, answers, index, option) + '">' +
+          '<span class="option-link-top"><span class="option-key">' + option.key + '</span></span>' +
+          '<strong class="option-title">' + option.summary.title + '</strong>' +
+          '<span class="option-copy">' + option.summary.copy + '</span>' +
+          '</a>';
+      }).join("");
+
+      var backHref = state.step === 0
+        ? "/index.html"
+        : app.buildQuestionHref(state.step - 1, answers.slice(0, -1));
+
+      root.innerHTML = '' +
+        '<div class="question-card">' +
+          '<span class="step-badge">질문 ' + (state.step + 1) + '</span>' +
+          '<h1 class="question-title">' + state.title + '</h1>' +
+          '<p class="question-description">' + state.description + '</p>' +
+          '<div class="option-list">' + optionsHtml + '</div>' +
+          '<div class="question-actions"><a class="secondary-link" href="' + backHref + '">' + (state.step === 0 ? "처음으로" : "이전으로") + '</a></div>' +
+        '</div>';
+    }());
+  </script>
+</body>
+</html>

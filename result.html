@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>추천 결과 | P들의 서재</title>
+  <link rel="stylesheet" href="style.css?v=multi1">
+</head>
+<body>
+  <div class="page-shell">
+    <main class="page-card result-layout">
+      <div id="result-root" class="result-root"></div>
+    </main>
+  </div>
+
+  <script src="books-data.js?v=20260319b"></script>
+  <script src="app-data.js?v=multi1"></script>
+  <script>
+    (function () {
+      var app = window.BookMatchApp;
+      if (!app) return;
+
+      var params = new URLSearchParams(window.location.search);
+      var answers = app.parseAnswers(params.get("answers"));
+      var result = app.getResultState(answers);
+      if (result.redirect) {
+        window.location.href = result.redirect;
+        return;
+      }
+
+      var root = document.getElementById("result-root");
+      var book = result.book;
+      var pathMap = result.trail.map(function (step, index) {
+        return '' +
+          '<div class="path-node">' +
+            '<span class="path-node-number">' + (index + 1) + '</span>' +
+            '<div class="path-node-card">' +
+              '<strong>' + step.question + '</strong>' +
+              '<p class="path-copy">' + step.answer + ' · ' + step.copy + '</p>' +
+            '</div>' +
+          '</div>';
+      }).join("");
+
+      var shelf = app.getBookshelfPage(0);
+      var shelfHtml = shelf.items.map(function (item) {
+        return '' +
+          '<article class="book-card">' +
+            '<span class="book-year">' + item.year + '</span>' +
+            '<h3>' + item.title + '</h3>' +
+            '<p>' + (item.author || "저자 정보 미정") + ' · ' + item.genre + '</p>' +
+            '<p>' + (item.topReview || item.summary) + '</p>' +
+            '<div class="book-footer"><span class="book-score">' + Number(item.averageRating).toFixed(2) + ' / 5</span><span class="result-meta">' + item.reviews.length + ' reviews</span></div>' +
+          '</article>';
+      }).join("");
+
+      root.innerHTML = '' +
+        '<div class="result-card">' +
+          '<div class="result-top">' +
+            '<div><p class="eyebrow">Your Book Match</p><h1 class="result-title">' + book.title + '</h1><p class="result-meta">' + (book.author || "저자 정보 미정") + ' · ' + book.year + ' · ' + book.genre + '</p></div>' +
+            '<div class="score-card"><strong>' + Number(book.averageRating).toFixed(2) + '</strong><span>club score</span></div>' +
+          '</div>' +
+          '<div class="result-grid">' +
+            '<div class="result-column">' +
+              '<section class="result-module"><h3>이 책을 고른 이유</h3><ul><li>지금 고른 답변 흐름이 이 책이 속한 최종 분기와 맞닿았습니다.</li><li>' + book.summary + '</li><li>북클럽에서 남긴 평점과 한줄 평을 함께 반영했습니다.</li></ul></section>' +
+              '<section class="result-module"><h3>추천 코멘트</h3><p class="result-copy">지금 고른 흐름은 분위기와 대화 포인트가 비교적 분명합니다. 그래서 이 책처럼 결이 선명하고 북클럽 안에서 인상이 남았던 선택이 잘 맞습니다.</p></section>' +
+              '<section class="result-module"><h3>대표 한줄 평</h3><p class="result-quote">' + (book.topReview || "대표 한줄 평 준비 중입니다.") + '</p><p class="result-meta">' + (book.topReviewer ? book.topReviewer + ' · ' + Number(book.topRating).toFixed(1) + '점' : "") + '</p></section>' +
+            '</div>' +
+            '<div class="result-column">' +
+              '<section class="result-module"><h3>어떤 경로로 이 책이 나왔는지</h3><div class="path-map">' + pathMap + '</div></section>' +
+              '<section class="result-module"><h3>우리가 읽은 책들</h3><div class="bookshelf">' + shelfHtml + '</div></section>' +
+            '</div>' +
+          '</div>' +
+          '<div class="chip-row"><span class="result-chip">50권 아카이브 기반</span><span class="result-chip">리뷰 ' + book.reviews.length + '개 반영</span><span class="result-chip">단일 분기 결과</span></div>' +
+          '<div class="result-actions"><a class="primary-link" href="/index.html">다시 해보기</a><a class="secondary-link" href="' + app.buildQuestionHref(app.questionCount - 1, answers.slice(0, -1)) + '">이전 질문으로</a></div>' +
+        '</div>';
+    }());
+  </script>
+</body>
+</html>
