@@ -235,7 +235,8 @@ function summarizeGroup(group) {
     genreCounts[book.genre] = (genreCounts[book.genre] || 0) + 1;
   });
 
-  const topGenre = Object.entries(genreCounts).sort((left, right) => right[1] - left[1])[0]?.[0] || "다양한 장르";
+  const sortedGenres = Object.entries(genreCounts).sort((left, right) => right[1] - left[1]);
+  const topGenre = sortedGenres.length ? sortedGenres[0][0] : "다양한 장르";
   const previewTitles = group
     .slice()
     .sort((left, right) => Number(right.averageRating) - Number(left.averageRating))
@@ -257,9 +258,9 @@ const books = rawBooks.map((book) => {
     genre: inferGenre(book),
     profile: buildProfile(book),
     summary: buildSummary(book),
-    topReview: topReview?.review || "",
-    topReviewer: topReview?.member || "",
-    topRating: topReview?.rating || Number(book.averageRating) || 0
+    topReview: topReview ? topReview.review : "",
+    topReviewer: topReview ? topReview.member : "",
+    topRating: topReview ? topReview.rating : (Number(book.averageRating) || 0)
   };
 });
 
@@ -619,6 +620,7 @@ function renderIntroBackdrop() {
 renderIntroBackdrop();
 renderIntroStats();
 resetExperience();
+window.beginBookMatch = startExperience;
 startButton.addEventListener("click", (event) => {
   event.preventDefault();
   startExperience();
