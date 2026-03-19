@@ -3,48 +3,48 @@
 
   var questionBlueprints = [
     {
-      title: "지금 가장 끌리는 책의 결은 뭐야?",
-      description: "첫 느낌에 가장 가까운 분위기를 골라줘.",
+      title: "어떤 종류의 책이 더 끌려?",
+      description: "가장 먼저 읽고 싶은 형태를 골라줘.",
       options: [
-        { key: "A", weights: { warm: 3, comforting: 2, intimate: 1 } },
-        { key: "B", weights: { sharp: 3, haunting: 2, dense: 1 } },
-        { key: "C", weights: { strange: 3, adventurous: 2, idea: 1 } }
+        { key: "A", title: "소설", copy: "인물과 이야기 흐름을 따라가는 책", weights: { warm: 3, comforting: 2, intimate: 1 } },
+        { key: "B", title: "에세이·교양", copy: "생각거리나 정보가 남는 책", weights: { sharp: 3, haunting: 2, dense: 1 } },
+        { key: "C", title: "상상력 강한 이야기", copy: "SF나 독특한 설정이 있는 책", weights: { strange: 3, adventurous: 2, idea: 1 } }
       ]
     },
     {
-      title: "읽고 나서 어떤 이야기를 나누고 싶어?",
-      description: "모임에서 더 길게 붙잡고 싶은 대화의 방향을 골라줘.",
+      title: "읽고 나서 무슨 이야기를 더 하고 싶어?",
+      description: "독서모임에서 중심이 될 대화를 골라줘.",
       options: [
-        { key: "A", weights: { intimate: 3, warm: 1, comforting: 1 } },
-        { key: "B", weights: { idea: 3, strange: 1, dense: 1 } },
-        { key: "C", weights: { civic: 3, debate: 2, sharp: 1 } }
+        { key: "A", title: "사람과 감정", copy: "관계, 상처, 회복 같은 이야기", weights: { intimate: 3, warm: 1, comforting: 1 } },
+        { key: "B", title: "아이디어와 관점", copy: "새로운 시선이나 설정 이야기", weights: { idea: 3, strange: 1, dense: 1 } },
+        { key: "C", title: "사회와 현실", copy: "현실과 맞닿은 주제 이야기", weights: { civic: 3, debate: 2, sharp: 1 } }
       ]
     },
     {
-      title: "이번에는 어느 정도의 호흡이 좋아?",
-      description: "책과 보내고 싶은 리듬을 골라줘.",
+      title: "읽는 호흡은 어느 쪽이 좋아?",
+      description: "이번엔 어떤 속도로 읽고 싶은지 골라줘.",
       options: [
-        { key: "A", weights: { breezy: 3, warm: 1, adventurous: 1 } },
-        { key: "B", weights: { idea: 2, intimate: 1, debate: 1 } },
-        { key: "C", weights: { dense: 3, haunting: 1, classic: 1 } }
+        { key: "A", title: "술술 읽히는 편", copy: "몰입이 빠르고 부담이 적은 책", weights: { breezy: 3, warm: 1, adventurous: 1 } },
+        { key: "B", title: "적당히 균형 잡힌 편", copy: "읽기 편하지만 생각할 거리도 있는 책", weights: { idea: 2, intimate: 1, debate: 1 } },
+        { key: "C", title: "천천히 곱씹는 편", copy: "문장과 의미를 오래 붙잡는 책", weights: { dense: 3, haunting: 1, classic: 1 } }
       ]
     },
     {
-      title: "책을 덮었을 때 어떤 느낌이 남았으면 해?",
-      description: "마지막 장 이후의 감각을 떠올려줘.",
+      title: "다 읽고 어떤 느낌이 남았으면 해?",
+      description: "마지막 장 이후의 잔향을 골라줘.",
       options: [
-        { key: "A", weights: { comforting: 3, warm: 2, intimate: 1 } },
-        { key: "B", weights: { debate: 3, idea: 1, civic: 1 } },
-        { key: "C", weights: { haunting: 3, sharp: 2, dense: 1 } }
+        { key: "A", title: "위로가 남는 책", copy: "마음이 조금 정리되는 느낌", weights: { comforting: 3, warm: 2, intimate: 1 } },
+        { key: "B", title: "대화거리가 남는 책", copy: "같이 얘기할 포인트가 많은 느낌", weights: { debate: 3, idea: 1, civic: 1 } },
+        { key: "C", title: "여운이 오래 남는 책", copy: "쉽게 잊히지 않는 느낌", weights: { haunting: 3, sharp: 2, dense: 1 } }
       ]
     },
     {
-      title: "오늘의 선택은 어느 쪽에 더 가까워?",
-      description: "마지막 취향의 결을 골라줘.",
+      title: "오늘은 어떤 선택이 더 끌려?",
+      description: "마지막으로 취향의 방향을 골라줘.",
       options: [
-        { key: "A", weights: { classic: 2, warm: 1, crowd: 3 } },
-        { key: "B", weights: { adventurous: 3, strange: 1, idea: 1 } },
-        { key: "C", weights: { offbeat: 3, sharp: 1, niche: 3 } }
+        { key: "A", title: "무난하게 만족할 책", copy: "반응이 좋고 실패 확률이 낮은 선택", weights: { classic: 2, warm: 1, crowd: 3 } },
+        { key: "B", title: "새로운 느낌의 책", copy: "조금 낯설어도 궁금해지는 선택", weights: { adventurous: 3, strange: 1, idea: 1 } },
+        { key: "C", title: "취향 강한 책", copy: "호불호가 있어도 기억에 남는 선택", weights: { offbeat: 3, sharp: 1, niche: 3 } }
       ]
     }
   ];
@@ -162,59 +162,13 @@
     };
   }
 
-  function traitLabel(trait) {
-    var labels = {
-      warm: "다정한 감정선",
-      sharp: "강한 인상",
-      strange: "낯선 상상력",
-      intimate: "관계 중심 서사",
-      idea: "아이디어 중심 읽기",
-      civic: "사회와 현실",
-      breezy: "가볍게 몰입",
-      dense: "천천히 곱씹는 결",
-      comforting: "위로의 잔향",
-      haunting: "오래 남는 여운",
-      debate: "토론이 되는 주제",
-      classic: "안정적인 만족감",
-      adventurous: "새롭고 신선한 방향",
-      offbeat: "취향 강한 선택"
-    };
-    return labels[trait] || trait;
-  }
-
-  function dominantTraits(group) {
-    var totals = {
-      warm: 0, sharp: 0, strange: 0, intimate: 0, idea: 0, civic: 0,
-      breezy: 0, dense: 0, comforting: 0, haunting: 0, debate: 0,
-      classic: 0, adventurous: 0, offbeat: 0
-    };
-
-    group.forEach(function (book) {
-      Object.keys(totals).forEach(function (key) {
-        totals[key] += book.profile[key] || 0;
-      });
-    });
-
-    return Object.entries(totals).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 3).map(function (entry) {
-      return entry[0];
-    });
-  }
-
   function summarizeGroup(group) {
-    var traits = dominantTraits(group).map(traitLabel);
-    var genreCounts = {};
-    group.forEach(function (book) {
-      genreCounts[book.genre] = (genreCounts[book.genre] || 0) + 1;
-    });
-    var sortedGenres = Object.entries(genreCounts).sort(function (a, b) { return b[1] - a[1]; });
-    var topGenre = sortedGenres.length ? sortedGenres[0][0] : "다양한 장르";
     var preview = group.slice().sort(function (a, b) {
       return Number(b.averageRating) - Number(a.averageRating);
     }).slice(0, 2).map(function (book) { return book.title; }).join(", ");
 
     return {
-      title: traits[0] + " · " + topGenre,
-      copy: traits.slice(1).join(", ") + " 쪽에 더 가깝다. 예: " + preview
+      preview: "예: " + preview
     };
   }
 
@@ -328,8 +282,8 @@
       if (!option) break;
       trail.push({
         question: node.blueprint.title,
-        answer: option.summary.title,
-        copy: option.summary.copy
+        answer: option.title,
+        copy: option.copy
       });
       node = option.child;
     }
@@ -418,4 +372,3 @@
     buildNextHref: buildNextHref
   };
 }());
-  var BASE_PATH = "./";

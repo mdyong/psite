@@ -47,8 +47,9 @@
         return '' +
           '<a class="option-link" href="' + app.buildNextHref(state.step, answers, index, option) + '">' +
           '<span class="option-link-top"><span class="option-key">' + option.key + '</span></span>' +
-          '<strong class="option-title">' + option.summary.title + '</strong>' +
-          '<span class="option-copy">' + option.summary.copy + '</span>' +
+          '<strong class="option-title">' + option.title + '</strong>' +
+          '<span class="option-copy">' + option.copy + '</span>' +
+          '<span class="option-hint">' + option.summary.preview + '</span>' +
           '</a>';
       }).join("");
 
