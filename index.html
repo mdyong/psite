@@ -3,58 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>북클럽 픽 | 질문으로 찾는 책 추천</title>
+  <title>P들의 서재 | 질문으로 찾는 북클럽 추천</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="noise"></div>
   <div class="page-shell">
     <header class="hero">
-      <p class="eyebrow">P Book Club Archive</p>
-      <h1>친구들과 읽은 기록으로<br>지금 어울리는 한 권을 찾으세요.</h1>
-      <p class="hero-copy">
-        실제 독서모임에서 남긴 평균 평점과 한줄 평을 바탕으로 만든 질문형 책 추천 사이트입니다.
-        몇 가지 선택지만 고르면 지금 분위기에 맞는 책과 추천 이유를 바로 보여줍니다.
-      </p>
-      <p id="stats-copy" class="hero-meta"></p>
+      <div class="hero-copy-block">
+        <p class="eyebrow">P Book Club Match Studio</p>
+        <h1>질문 다섯 개로<br>지금 읽고 싶은 한 권을 고릅니다.</h1>
+        <p class="hero-copy">
+          실제 독서모임에서 남긴 평균 평점과 한줄 평을 바탕으로 만든 추천 사이트입니다.
+          감정선, 대화 포인트, 읽는 호흡을 고르면 지금의 분위기에 가장 가까운 책을 골라줍니다.
+        </p>
+        <div class="hero-meta-row">
+          <div class="metric-card">
+            <span class="metric-label">Archive</span>
+            <strong id="archive-count">50권</strong>
+            <span class="metric-copy">우리가 읽은 책 전체</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Members</span>
+            <strong id="member-count">5명</strong>
+            <span class="metric-copy">실제 리뷰어 기준</span>
+          </div>
+          <div class="metric-card accent">
+            <span class="metric-label">Routing</span>
+            <strong>243 paths</strong>
+            <span class="metric-copy">50권 모두 추천 가능</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-aside">
+        <p class="aside-label">Live note</p>
+        <h2>친구들 취향을 닮은 추천기</h2>
+        <p id="stats-copy" class="aside-copy"></p>
+        <div class="glance-grid">
+          <div class="glance-card">
+            <span>추천 방식</span>
+            <strong>질문 기반 매칭</strong>
+          </div>
+          <div class="glance-card">
+            <span>기록 기준</span>
+            <strong>평점 + 한줄 평</strong>
+          </div>
+          <div class="glance-card">
+            <span>출력</span>
+            <strong>책 + 이유 + 대안</strong>
+          </div>
+        </div>
+      </aside>
     </header>
 
-    <main class="layout">
-      <section class="panel question-panel">
-        <div class="panel-head">
-          <p class="section-label">질문</p>
-          <h2>이번에는 어떤 책을 읽고 싶나요?</h2>
-          <p class="panel-copy">객관식 답변을 고르면 모임 데이터와 가장 잘 맞는 책을 계산합니다.</p>
+    <main class="main-grid">
+      <section class="quiz-panel">
+        <div class="section-head">
+          <p class="section-label">Question Set</p>
+          <div class="section-title-row">
+            <h2>이번엔 어떤 결의 책이 필요해?</h2>
+            <div class="progress-pill">
+              <span id="progress-text">0 / 5</span>
+            </div>
+          </div>
+          <p class="section-copy">객관식 다섯 문항을 고르면 현재 기분과 대화 취향에 맞춰 한 권을 계산합니다.</p>
         </div>
 
         <form id="quiz-form" class="quiz-form"></form>
 
         <div class="action-row">
-          <button id="recommend-button" class="primary-button" type="button">책 추천 받기</button>
-          <button id="reset-button" class="ghost-button" type="button">다시 고르기</button>
+          <button id="recommend-button" class="primary-button" type="button">추천 보기</button>
+          <button id="reset-button" class="secondary-button" type="button">초기화</button>
         </div>
       </section>
 
-      <section class="panel result-panel">
-        <div class="panel-head">
-          <p class="section-label">결과</p>
-          <h2>추천 결과</h2>
-          <p class="panel-copy">평균 평점, 대표 리뷰, 왜 맞는지까지 한 번에 확인할 수 있습니다.</p>
+      <aside class="result-panel">
+        <div class="section-head compact">
+          <p class="section-label">Recommendation</p>
+          <h2>가장 잘 맞는 책</h2>
         </div>
-
         <div id="result-card" class="result-card empty">
-          <p class="empty-state">왼쪽 질문에 답하면 여기에서 추천 결과를 확인할 수 있습니다.</p>
+          <p class="empty-state">다섯 질문에 답하면 여기에서 추천 결과를 보여줍니다.</p>
         </div>
-      </section>
+      </aside>
     </main>
 
-    <section class="panel shelf-panel">
-      <div class="panel-head">
-        <p class="section-label">Archive</p>
-        <h2>독서모임 책장</h2>
-        <p class="panel-copy">지금까지 읽은 책 중 평점이 높았던 책들을 빠르게 둘러보세요.</p>
+    <section class="shelf-panel">
+      <div class="section-head shelf-head">
+        <div>
+          <p class="section-label">Archive Shelf</p>
+          <h2>우리가 읽은 책</h2>
+        </div>
+        <p class="section-copy">평점과 한줄 평을 기준으로 정리한 북클럽 아카이브입니다.</p>
       </div>
       <div id="bookshelf" class="bookshelf"></div>
     </section>
