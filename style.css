@@ -20,7 +20,8 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.98), transparent 28%),
     radial-gradient(circle at 88% 8%, rgba(49, 130, 246, 0.08), transparent 18%),
@@ -33,10 +34,12 @@ body {
 .page-shell {
   width: min(960px, calc(100% - 24px));
   margin: 0 auto;
-  padding: 24px 0 40px;
+  height: 100vh;
+  padding: 12px 0;
 }
 
 .app-frame {
+  height: 100%;
   border-radius: 36px;
   border: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.72));
@@ -46,7 +49,7 @@ body {
 }
 
 .screen {
-  min-height: 720px;
+  height: 100%;
   padding: 32px;
 }
 
@@ -232,12 +235,16 @@ body {
 
 .question-stage,
 .result-stage {
-  max-width: 720px;
+  max-width: 100%;
+  height: calc(100% - 86px);
   margin: 24px auto 0;
 }
 
 .question-card {
+  height: 100%;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 .step-badge {
@@ -266,6 +273,7 @@ body {
   display: grid;
   gap: 12px;
   margin-top: 28px;
+  flex: 1;
 }
 
 .option-button {
@@ -330,6 +338,9 @@ body {
 
 .result-card {
   padding: 30px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
 }
 
 .result-top {
@@ -373,12 +384,22 @@ body {
 
 .result-grid {
   display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: 12px;
   margin-top: 22px;
+  min-height: 0;
+}
+
+.result-column {
+  display: grid;
+  gap: 12px;
+  min-height: 0;
 }
 
 .result-module {
   padding: 20px 22px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .result-module h3 {
@@ -404,6 +425,7 @@ body {
 .path-map {
   display: grid;
   gap: 12px;
+  max-height: 100%;
 }
 
 .path-node {
@@ -451,20 +473,24 @@ body {
 
 .bookshelf {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 16px;
 }
 
 .book-card {
-  padding: 18px;
+  padding: 16px;
 }
 
 .book-card h3 {
-  margin: 12px 0 0;
-  font-size: 1.08rem;
-  line-height: 1.45;
+  margin: 10px 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
   letter-spacing: -0.02em;
+}
+
+.book-card p {
+  font-size: 0.92rem;
 }
 
 .book-year {
@@ -489,9 +515,22 @@ body {
   font-weight: 700;
 }
 
+.bookshelf-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pagination-copy {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 820px) {
   .screen {
-    min-height: auto;
+    height: 100%;
     padding: 18px;
   }
 
@@ -525,11 +564,15 @@ body {
   .question-title,
   .result-title {
     font-size: clamp(2rem, 9vw, 3rem);
-    line-height: 1.18;
+    line-height: 1.22;
   }
 
   .question-description,
   .intro-text {
     max-width: none;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
   }
 }

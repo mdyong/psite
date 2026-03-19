@@ -114,6 +114,7 @@ const resultStage = document.querySelector("#result-stage");
 let currentNode = null;
 let currentPath = [];
 let answerTrail = [];
+let bookshelfPage = 0;
 
 function slugify(value) {
   return value.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-").replace(/^-+|-+$/g, "");
@@ -172,6 +173,79 @@ function buildSummary(book) {
     .filter(Boolean);
 
   return parts.length ? `${parts.join(" / ")} 라는 인상이 남은 책입니다.` : "북클럽 기록을 기반으로 추천했습니다.";
+}
+
+function dominantTraits(group) {
+  const totals = {
+    warm: 0,
+    sharp: 0,
+    strange: 0,
+    intimate: 0,
+    idea: 0,
+    civic: 0,
+    breezy: 0,
+    dense: 0,
+    comforting: 0,
+    haunting: 0,
+    debate: 0,
+    classic: 0,
+    adventurous: 0,
+    offbeat: 0
+  };
+
+  group.forEach((book) => {
+    Object.keys(totals).forEach((key) => {
+      totals[key] += book.profile[key] || 0;
+    });
+  });
+
+  return Object.entries(totals)
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 3)
+    .map(([key]) => key);
+}
+
+function traitLabel(trait) {
+  const labels = {
+    warm: "다정한 감정선",
+    sharp: "강한 인상",
+    strange: "낯선 상상력",
+    intimate: "관계 중심 서사",
+    idea: "아이디어 중심 읽기",
+    civic: "사회와 현실",
+    breezy: "가볍게 몰입",
+    dense: "천천히 곱씹는 결",
+    comforting: "위로의 잔향",
+    haunting: "오래 남는 여운",
+    debate: "토론이 되는 주제",
+    classic: "안정적인 만족감",
+    adventurous: "새롭고 신선한 방향",
+    offbeat: "취향 강한 선택"
+  };
+
+  return labels[trait] || trait;
+}
+
+function summarizeGroup(group) {
+  const traits = dominantTraits(group).map(traitLabel);
+  const genreCounts = {};
+
+  group.forEach((book) => {
+    genreCounts[book.genre] = (genreCounts[book.genre] || 0) + 1;
+  });
+
+  const topGenre = Object.entries(genreCounts).sort((left, right) => right[1] - left[1])[0]?.[0] || "다양한 장르";
+  const previewTitles = group
+    .slice()
+    .sort((left, right) => Number(right.averageRating) - Number(left.averageRating))
+    .slice(0, 2)
+    .map((book) => book.title)
+    .join(", ");
+
+  return {
+    title: `${traits[0]} · ${topGenre}`,
+    copy: `${traits.slice(1).join(", ")} 쪽에 더 가깝다. 예: ${previewTitles}`
+  };
 }
 
 const books = rawBooks.map((book) => {
@@ -253,6 +327,7 @@ function buildTree(items, depth = 0) {
     options: groups.map((group, index) => ({
       ...blueprint.options[index],
       count: group.length,
+      summary: summarizeGroup(group),
       child: buildTree(group, depth + 1)
     }))
   };
@@ -287,8 +362,8 @@ function renderQuestion(node) {
             <span class="option-label-top">
               <span class="option-key">${option.key}</span>
             </span>
-            <span class="option-title">${option.title}</span>
-            <span class="option-copy">${option.copy}</span>
+            <span class="option-title">${option.summary.title}</span>
+            <span class="option-copy">${option.summary.copy}</span>
           </button>
         `).join("")}
       </div>
@@ -305,8 +380,8 @@ function renderQuestion(node) {
       currentPath.push(branchIndex);
       answerTrail.push({
         question: node.blueprint.title,
-        answer: choice.title,
-        copy: choice.copy
+        answer: choice.summary.title,
+        copy: choice.summary.copy
       });
 
       if (choice.child.type === "leaf") {
@@ -359,9 +434,14 @@ function renderBookshelf() {
     return Number(right.averageRating) - Number(left.averageRating);
   });
 
+  const pageSize = 6;
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const start = bookshelfPage * pageSize;
+  const visible = sorted.slice(start, start + pageSize);
+
   return `
     <div class="bookshelf">
-      ${sorted.map((book) => `
+      ${visible.map((book) => `
         <article class="book-card">
           <span class="book-year">${book.year}</span>
           <h3>${book.title}</h3>
@@ -374,11 +454,19 @@ function renderBookshelf() {
         </article>
       `).join("")}
     </div>
+    <div class="bookshelf-pagination">
+      <button id="prev-bookshelf" class="secondary-button" type="button">이전</button>
+      <span class="pagination-copy">${bookshelfPage + 1} / ${totalPages}</span>
+      <button id="next-bookshelf" class="secondary-button" type="button">다음</button>
+    </div>
   `;
 }
 
-function renderResult(book) {
+function renderResult(book, preserveBookshelfPage = false) {
   showScreen("result");
+  if (!preserveBookshelfPage) {
+    bookshelfPage = 0;
+  }
 
   resultStage.innerHTML = `
     <div class="result-card">
@@ -395,35 +483,39 @@ function renderResult(book) {
       </div>
 
       <div class="result-grid">
-        <section class="result-module">
-          <h3>이 책을 고른 이유</h3>
-          <ul>
-            <li>지금 고른 답변 흐름이 이 책이 속한 최종 분기와 맞닿았습니다.</li>
-            <li>${book.summary}</li>
-            <li>북클럽에서 남긴 평점과 한줄 평을 함께 반영했습니다.</li>
-          </ul>
-        </section>
+        <div class="result-column">
+          <section class="result-module">
+            <h3>이 책을 고른 이유</h3>
+            <ul>
+              <li>지금 고른 답변 흐름이 이 책이 속한 최종 분기와 맞닿았습니다.</li>
+              <li>${book.summary}</li>
+              <li>북클럽에서 남긴 평점과 한줄 평을 함께 반영했습니다.</li>
+            </ul>
+          </section>
 
-        <section class="result-module">
-          <h3>추천 코멘트</h3>
-          <p class="result-copy">지금의 취향은 무드와 대화 포인트가 분명합니다. 그래서 너무 무난한 책보다, 이 책처럼 결이 선명한 선택이 더 잘 맞습니다.</p>
-        </section>
+          <section class="result-module">
+            <h3>추천 코멘트</h3>
+            <p class="result-copy">지금 고른 흐름은 분위기와 대화 포인트가 비교적 분명합니다. 그래서 이 책처럼 결이 선명하고 북클럽 안에서 인상이 남았던 선택이 잘 맞습니다.</p>
+          </section>
 
-        <section class="result-module">
-          <h3>대표 한줄 평</h3>
-          <p class="result-quote">${book.topReview || "대표 한줄 평 준비 중입니다."}</p>
-          <p class="result-meta">${book.topReviewer ? `${book.topReviewer} · ${Number(book.topRating).toFixed(1)}점` : ""}</p>
-        </section>
+          <section class="result-module">
+            <h3>대표 한줄 평</h3>
+            <p class="result-quote">${book.topReview || "대표 한줄 평 준비 중입니다."}</p>
+            <p class="result-meta">${book.topReviewer ? `${book.topReviewer} · ${Number(book.topRating).toFixed(1)}점` : ""}</p>
+          </section>
+        </div>
 
-        <section class="result-module">
-          <h3>어떤 경로로 이 책이 나왔는지</h3>
-          ${renderPathMap()}
-        </section>
+        <div class="result-column">
+          <section class="result-module">
+            <h3>어떤 경로로 이 책이 나왔는지</h3>
+            ${renderPathMap()}
+          </section>
 
-        <section class="result-module">
-          <h3>우리가 읽은 책들</h3>
-          ${renderBookshelf()}
-        </section>
+          <section class="result-module">
+            <h3>우리가 읽은 책들</h3>
+            ${renderBookshelf()}
+          </section>
+        </div>
       </div>
 
       <div class="chip-row">
@@ -441,6 +533,34 @@ function renderResult(book) {
 
   document.querySelector("#restart-button").addEventListener("click", resetExperience);
   document.querySelector("#result-back-button").addEventListener("click", goBack);
+  bindBookshelfPagination(book);
+}
+
+function bindBookshelfPagination(book) {
+  const pageSize = 6;
+  const totalPages = Math.ceil(books.length / pageSize);
+  const prev = document.querySelector("#prev-bookshelf");
+  const next = document.querySelector("#next-bookshelf");
+
+  if (prev) {
+    prev.disabled = bookshelfPage === 0;
+    prev.addEventListener("click", () => {
+      if (bookshelfPage > 0) {
+        bookshelfPage -= 1;
+        renderResult(book, true);
+      }
+    });
+  }
+
+  if (next) {
+    next.disabled = bookshelfPage >= totalPages - 1;
+    next.addEventListener("click", () => {
+      if (bookshelfPage < totalPages - 1) {
+        bookshelfPage += 1;
+        renderResult(book, true);
+      }
+    });
+  }
 }
 
 function goBack() {
