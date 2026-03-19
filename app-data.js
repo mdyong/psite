@@ -1,5 +1,6 @@
 (function () {
   var rawBooks = Array.isArray(window.bookClubBooks) ? window.bookClubBooks : [];
+  var BASE_PATH = "./";
 
   var questionBlueprints = [
     {
