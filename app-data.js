@@ -4,48 +4,48 @@
 
   var questionBlueprints = [
     {
-      title: "어떤 종류의 책이 더 끌려?",
-      description: "가장 먼저 읽고 싶은 형태를 골라줘.",
+      title: "오늘은 어떤 결의 책이 더 끌려?",
+      description: "가장 먼저 당기는 읽기 방향을 골라줘.",
       options: [
-        { key: "A", title: "소설", copy: "인물과 이야기 흐름을 따라가는 책", weights: { warm: 3, comforting: 2, intimate: 1 } },
-        { key: "B", title: "에세이·교양", copy: "생각거리나 정보가 남는 책", weights: { sharp: 3, haunting: 2, dense: 1 } },
-        { key: "C", title: "상상력 강한 이야기", copy: "SF나 독특한 설정이 있는 책", weights: { strange: 3, adventurous: 2, idea: 1 } }
+        { key: "A", emoji: "📖", title: "이야기 중심", copy: "인물과 관계를 따라가는 서사가 좋다", weights: { warm: 3, comforting: 2, intimate: 2, classic: 1 } },
+        { key: "B", emoji: "🧠", title: "생각 중심", copy: "읽고 나서 관점이나 정보가 남는 책이 좋다", weights: { idea: 3, debate: 2, civic: 1, dense: 1 } },
+        { key: "C", emoji: "🚀", title: "설정 중심", copy: "낯선 세계나 강한 콘셉트가 있는 책이 좋다", weights: { strange: 3, adventurous: 2, offbeat: 1, idea: 1 } }
       ]
     },
     {
-      title: "읽고 나서 무슨 이야기를 더 하고 싶어?",
-      description: "독서모임에서 중심이 될 대화를 골라줘.",
+      title: "가장 끌리는 대화 포인트는 뭐야?",
+      description: "독서모임에서 더 오래 이야기하고 싶은 쪽을 골라줘.",
       options: [
-        { key: "A", title: "사람과 감정", copy: "관계, 상처, 회복 같은 이야기", weights: { intimate: 3, warm: 1, comforting: 1 } },
-        { key: "B", title: "아이디어와 관점", copy: "새로운 시선이나 설정 이야기", weights: { idea: 3, strange: 1, dense: 1 } },
-        { key: "C", title: "사회와 현실", copy: "현실과 맞닿은 주제 이야기", weights: { civic: 3, debate: 2, sharp: 1 } }
+        { key: "A", emoji: "💞", title: "사람과 감정", copy: "관계, 상처, 회복 같은 감정선이 좋다", weights: { intimate: 3, warm: 2, comforting: 1 } },
+        { key: "B", emoji: "💬", title: "아이디어와 관점", copy: "새로운 시선과 생각거리가 많은 책이 좋다", weights: { idea: 3, debate: 2, dense: 1 } },
+        { key: "C", emoji: "🌍", title: "사회와 현실", copy: "현실과 맞닿은 문제의식이 있는 책이 좋다", weights: { civic: 3, sharp: 2, debate: 1 } }
       ]
     },
     {
-      title: "읽는 호흡은 어느 쪽이 좋아?",
-      description: "이번엔 어떤 속도로 읽고 싶은지 골라줘.",
+      title: "읽는 리듬은 어느 쪽이 좋아?",
+      description: "지금의 집중력에 맞는 호흡을 골라줘.",
       options: [
-        { key: "A", title: "술술 읽히는 편", copy: "몰입이 빠르고 부담이 적은 책", weights: { breezy: 3, warm: 1, adventurous: 1 } },
-        { key: "B", title: "적당히 균형 잡힌 편", copy: "읽기 편하지만 생각할 거리도 있는 책", weights: { idea: 2, intimate: 1, debate: 1 } },
-        { key: "C", title: "천천히 곱씹는 편", copy: "문장과 의미를 오래 붙잡는 책", weights: { dense: 3, haunting: 1, classic: 1 } }
+        { key: "A", emoji: "🍃", title: "술술 읽히는 편", copy: "몰입이 빠르고 부담이 적은 책이 좋다", weights: { breezy: 3, warm: 1, adventurous: 1 } },
+        { key: "B", emoji: "⚖️", title: "균형 잡힌 편", copy: "읽기 편하면서 생각할 거리도 있으면 좋다", weights: { idea: 2, intimate: 1, debate: 1, classic: 1 } },
+        { key: "C", emoji: "🪨", title: "천천히 곱씹는 편", copy: "문장과 의미를 오래 붙잡는 책이 좋다", weights: { dense: 3, haunting: 1, sharp: 1 } }
       ]
     },
     {
       title: "다 읽고 어떤 느낌이 남았으면 해?",
-      description: "마지막 장 이후의 잔향을 골라줘.",
+      description: "책을 덮은 뒤 가장 바라게 되는 잔향을 골라줘.",
       options: [
-        { key: "A", title: "위로가 남는 책", copy: "마음이 조금 정리되는 느낌", weights: { comforting: 3, warm: 2, intimate: 1 } },
-        { key: "B", title: "대화거리가 남는 책", copy: "같이 얘기할 포인트가 많은 느낌", weights: { debate: 3, idea: 1, civic: 1 } },
-        { key: "C", title: "여운이 오래 남는 책", copy: "쉽게 잊히지 않는 느낌", weights: { haunting: 3, sharp: 2, dense: 1 } }
+        { key: "A", emoji: "🤍", title: "위로가 남는 책", copy: "마음이 조금 정리되고 다정함이 남으면 좋다", weights: { comforting: 3, warm: 2, intimate: 1 } },
+        { key: "B", emoji: "🗣️", title: "대화거리가 남는 책", copy: "같이 이야기할 포인트와 통찰이 많으면 좋다", weights: { debate: 3, idea: 2, civic: 1 } },
+        { key: "C", emoji: "🌫️", title: "여운이 남는 책", copy: "쉽게 잊히지 않는 묵직한 인상이 남으면 좋다", weights: { haunting: 3, sharp: 2, dense: 1 } }
       ]
     },
     {
-      title: "오늘은 어떤 선택이 더 끌려?",
-      description: "마지막으로 취향의 방향을 골라줘.",
+      title: "오늘의 선택 방식은 어느 쪽이야?",
+      description: "마지막으로 지금의 취향 온도를 골라줘.",
       options: [
-        { key: "A", title: "무난하게 만족할 책", copy: "반응이 좋고 실패 확률이 낮은 선택", weights: { classic: 2, warm: 1, crowd: 3 } },
-        { key: "B", title: "새로운 느낌의 책", copy: "조금 낯설어도 궁금해지는 선택", weights: { adventurous: 3, strange: 1, idea: 1 } },
-        { key: "C", title: "취향 강한 책", copy: "호불호가 있어도 기억에 남는 선택", weights: { offbeat: 3, sharp: 1, niche: 3 } }
+        { key: "A", emoji: "🍽️", title: "안정적으로 만족", copy: "반응이 좋고 실패 확률이 낮은 선택이 좋다", weights: { classic: 2, warm: 1, crowd: 3 } },
+        { key: "B", emoji: "🧪", title: "새롭고 신선하게", copy: "조금 낯설어도 궁금해지는 선택이 좋다", weights: { adventurous: 3, strange: 1, idea: 1 } },
+        { key: "C", emoji: "🎯", title: "취향 강하게", copy: "호불호가 있어도 기억에 남는 선택이 좋다", weights: { offbeat: 3, sharp: 1, niche: 3 } }
       ]
     }
   ];
@@ -199,7 +199,7 @@
     }).slice(0, 2).map(function (book) { return book.title; }).join(", ");
 
     return {
-      preview: "예: " + preview
+      preview: preview
     };
   }
 

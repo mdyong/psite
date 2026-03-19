@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>질문 | P들의 서재</title>
-  <link rel="stylesheet" href="style.css?v=multi2">
+  <link rel="stylesheet" href="style.css?v=multi3">
 </head>
 <body>
   <div class="page-shell">
@@ -21,7 +21,7 @@
   </div>
 
   <script src="books-data.js?v=20260319b"></script>
-  <script src="app-data.js?v=multi2"></script>
+  <script src="app-data.js?v=multi3"></script>
   <script>
     (function () {
       var app = window.BookMatchApp;
@@ -46,8 +46,8 @@
       var optionsHtml = state.options.map(function (option, index) {
         return '' +
           '<a class="option-link" href="' + app.buildNextHref(state.step, answers, index, option) + '">' +
-          '<span class="option-link-top"><span class="option-key">' + option.key + '</span></span>' +
-          '<strong class="option-title">' + option.title + '</strong>' +
+          '<span class="option-link-top"><span class="option-emoji">' + (option.emoji || "") + '</span></span>' +
+          '<span class="option-title-row"><strong class="option-title">' + option.title + '</strong></span>' +
           '<span class="option-copy">' + option.copy + '</span>' +
           '<span class="option-hint">' + option.summary.preview + '</span>' +
           '</a>';
