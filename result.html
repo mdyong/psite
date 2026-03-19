@@ -20,8 +20,8 @@
       var app = window.BookMatchApp;
       if (!app) return;
 
-      var params = new URLSearchParams(window.location.search);
-      var answers = app.parseAnswers(params.get("answers"));
+      var params = app.parseQuery(window.location.search);
+      var answers = app.parseAnswers(params.answers);
       var result = app.getResultState(answers);
       if (result.redirect) {
         window.location.href = result.redirect;

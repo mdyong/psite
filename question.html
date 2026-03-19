@@ -27,9 +27,9 @@
       var app = window.BookMatchApp;
       if (!app) return;
 
-      var params = new URLSearchParams(window.location.search);
-      var step = Number(params.get("step") || "0");
-      var answers = app.parseAnswers(params.get("answers"));
+      var params = app.parseQuery(window.location.search);
+      var step = Number(params.step || "0");
+      var answers = app.parseAnswers(params.answers);
       var state = app.getQuestionState(step, answers);
 
       if (state.redirect) {

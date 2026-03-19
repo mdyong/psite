@@ -108,6 +108,36 @@
     }, 0);
   }
 
+  function objectEntries(obj) {
+    return Object.keys(obj).map(function (key) {
+      return [key, obj[key]];
+    });
+  }
+
+  function parseQuery(search) {
+    var query = {};
+    var raw = (search || "").replace(/^\?/, "");
+    if (!raw) return query;
+    raw.split("&").forEach(function (part) {
+      if (!part) return;
+      var pieces = part.split("=");
+      var key = decodeURIComponent(pieces[0] || "");
+      var value = decodeURIComponent((pieces[1] || "").replace(/\+/g, " "));
+      query[key] = value;
+    });
+    return query;
+  }
+
+  function buildQuery(params) {
+    var keys = Object.keys(params).filter(function (key) {
+      return params[key] !== undefined && params[key] !== null && params[key] !== "";
+    });
+    if (!keys.length) return "";
+    return "?" + keys.map(function (key) {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+    }).join("&");
+  }
+
   function slugify(value) {
     return value.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-").replace(/^-+|-+$/g, "");
   }
@@ -189,7 +219,7 @@
     return blueprint.options.map(function (option, index) {
       return {
         index: index,
-        score: Object.entries(option.weights).reduce(function (sum, entry) {
+        score: objectEntries(option.weights).reduce(function (sum, entry) {
           return sum + ((book.profile[entry[0]] || 0) * entry[1]);
         }, 0)
       };
@@ -201,7 +231,7 @@
   }
 
   function optionScore(book, option) {
-    return Object.entries(option.weights).reduce(function (sum, entry) {
+    return objectEntries(option.weights).reduce(function (sum, entry) {
       return sum + ((book.profile[entry[0]] || 0) * entry[1]);
     }, 0);
   }
@@ -269,7 +299,7 @@
     return value.split(",").map(function (item) {
       return Number(item);
     }).filter(function (item) {
-      return !Number.isNaN(item);
+      return !isNaN(item);
     });
   }
 
@@ -291,16 +321,16 @@
   }
 
   function buildQuestionHref(step, answers) {
-    var params = new URLSearchParams();
-    params.set("step", String(step));
-    if (answers.length) params.set("answers", answers.join(","));
-    return BASE_PATH + "question.html?" + params.toString();
+    return BASE_PATH + "question.html" + buildQuery({
+      step: String(step),
+      answers: answers.length ? answers.join(",") : ""
+    });
   }
 
   function buildResultHref(answers) {
-    var params = new URLSearchParams();
-    params.set("answers", answers.join(","));
-    return BASE_PATH + "result.html?" + params.toString();
+    return BASE_PATH + "result.html" + buildQuery({
+      answers: answers.join(",")
+    });
   }
 
   function getQuestionState(step, answers) {
@@ -365,6 +395,7 @@
       }).sort(function (a, b) { return a - b; });
     },
     parseAnswers: parseAnswers,
+    parseQuery: parseQuery,
     getQuestionState: getQuestionState,
     getResultState: getResultState,
     getBookshelfPage: getBookshelfPage,
