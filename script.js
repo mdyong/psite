@@ -594,7 +594,9 @@ resetExperience();
 window.beginBookMatch = startExperience;
 
 document.addEventListener("click", (event) => {
-  const optionButton = event.target.closest(".option-button");
+  const rawTarget = event.target;
+  const targetElement = rawTarget instanceof Element ? rawTarget : rawTarget && rawTarget.parentElement ? rawTarget.parentElement : null;
+  const optionButton = targetElement ? targetElement.closest(".option-button") : null;
   if (optionButton && currentNode && currentNode.type === "question") {
     event.preventDefault();
     const branchIndex = Number(optionButton.dataset.branchIndex);
@@ -614,30 +616,29 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  const target = event.target;
-  if (!(target instanceof HTMLElement)) {
+  if (!(targetElement instanceof HTMLElement)) {
     return;
   }
 
-  if (target.id === "start-button") {
+  if (targetElement.id === "start-button") {
     event.preventDefault();
     startExperience();
     return;
   }
 
-  if (target.id === "cancel-button") {
+  if (targetElement.id === "cancel-button") {
     event.preventDefault();
     resetExperience();
     return;
   }
 
-  if (target.id === "back-button" || target.id === "result-back-button") {
+  if (targetElement.id === "back-button" || targetElement.id === "result-back-button") {
     event.preventDefault();
     goBack();
     return;
   }
 
-  if (target.id === "restart-button") {
+  if (targetElement.id === "restart-button") {
     event.preventDefault();
     resetExperience();
   }
