@@ -70,9 +70,9 @@ body {
 .intro-screen {
   position: relative;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
   overflow: hidden;
   isolation: isolate;
 }
@@ -137,7 +137,6 @@ body {
 }
 
 .intro-copy,
-.intro-card,
 .question-card,
 .result-card,
 .result-module,
@@ -155,6 +154,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: min(100%, 640px);
+  min-height: 420px;
+  text-align: center;
+  align-items: center;
 }
 
 .intro-copy h1,
@@ -180,7 +183,7 @@ body {
 
 .intro-text {
   margin: 18px 0 0;
-  max-width: 34ch;
+  max-width: 32ch;
 }
 
 .primary-button,
@@ -200,7 +203,6 @@ body {
 
 .primary-button {
   margin-top: 24px;
-  align-self: flex-start;
   background: var(--accent);
   color: white;
   box-shadow: 0 18px 34px rgba(49, 130, 246, 0.24);
@@ -224,17 +226,6 @@ body {
   transform: translateY(-1px);
 }
 
-.intro-card {
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: linear-gradient(180deg, rgba(244, 248, 255, 0.96), rgba(255, 255, 255, 0.98));
-}
-
 .intro-chip-row,
 .chip-row {
   display: flex;
@@ -242,7 +233,6 @@ body {
   gap: 8px;
 }
 
-.intro-chip,
 .result-chip {
   display: inline-flex;
   align-items: center;
@@ -252,15 +242,6 @@ body {
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 700;
-}
-
-.intro-chip {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.intro-note {
-  margin: 18px 0 0;
 }
 
 .question-head {
@@ -625,7 +606,6 @@ body {
   .question-card,
   .result-card,
   .intro-copy,
-  .intro-card,
   .result-module,
   .book-card {
     padding: 20px;

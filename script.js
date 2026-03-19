@@ -374,35 +374,6 @@ function renderQuestion(node) {
       </div>
     </div>
   `;
-
-  questionStage.querySelectorAll(".option-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const branchIndex = Number(button.dataset.branchIndex);
-      const choice = node.options[branchIndex];
-      currentPath.push(branchIndex);
-      answerTrail.push({
-        question: node.blueprint.title,
-        answer: choice.summary.title,
-        copy: choice.summary.copy
-      });
-
-      if (choice.child.type === "leaf") {
-        renderResult(choice.child.book);
-      } else {
-        renderQuestion(choice.child);
-      }
-    });
-  });
-
-  const backButton = document.querySelector("#back-button");
-  if (backButton) {
-    backButton.addEventListener("click", goBack);
-  }
-
-  const cancelButton = document.querySelector("#cancel-button");
-  if (cancelButton) {
-    cancelButton.addEventListener("click", resetExperience);
-  }
 }
 
 function findNodeByPath(path) {
@@ -621,11 +592,53 @@ renderIntroBackdrop();
 renderIntroStats();
 resetExperience();
 window.beginBookMatch = startExperience;
-startButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  startExperience();
+
+document.addEventListener("click", (event) => {
+  const optionButton = event.target.closest(".option-button");
+  if (optionButton && currentNode && currentNode.type === "question") {
+    event.preventDefault();
+    const branchIndex = Number(optionButton.dataset.branchIndex);
+    const choice = currentNode.options[branchIndex];
+    currentPath.push(branchIndex);
+    answerTrail.push({
+      question: currentNode.blueprint.title,
+      answer: choice.summary.title,
+      copy: choice.summary.copy
+    });
+
+    if (choice.child.type === "leaf") {
+      renderResult(choice.child.book);
+    } else {
+      renderQuestion(choice.child);
+    }
+    return;
+  }
+
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  if (target.id === "start-button") {
+    event.preventDefault();
+    startExperience();
+    return;
+  }
+
+  if (target.id === "cancel-button") {
+    event.preventDefault();
+    resetExperience();
+    return;
+  }
+
+  if (target.id === "back-button" || target.id === "result-back-button") {
+    event.preventDefault();
+    goBack();
+    return;
+  }
+
+  if (target.id === "restart-button") {
+    event.preventDefault();
+    resetExperience();
+  }
 });
-startButton.onclick = (event) => {
-  event.preventDefault();
-  startExperience();
-};
