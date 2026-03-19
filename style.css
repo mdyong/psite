@@ -34,6 +34,41 @@ body {
   padding: 12px 0;
 }
 
+body.result-body {
+  overflow: auto;
+}
+
+body.result-body .page-shell {
+  height: auto;
+  min-height: 100%;
+  padding: 24px 0 40px;
+}
+
+body.result-body .page-card {
+  height: auto;
+  min-height: calc(100vh - 48px);
+  overflow: visible;
+}
+
+body.result-body .result-layout {
+  display: block;
+  min-height: 100%;
+}
+
+body.result-body .result-root {
+  height: auto;
+  display: block;
+}
+
+body.result-body .result-card {
+  height: auto;
+  display: block;
+}
+
+body.result-body .result-module {
+  overflow: visible;
+}
+
 .page-card {
   height: 100%;
   border-radius: 36px;
