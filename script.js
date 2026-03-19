@@ -106,6 +106,7 @@ const questionScreen = document.querySelector("#question-screen");
 const resultScreen = document.querySelector("#result-screen");
 const introStats = document.querySelector("#intro-stats");
 const startButton = document.querySelector("#start-button");
+const introBackdrop = document.querySelector("#intro-backdrop");
 const progressPill = document.querySelector("#progress-pill");
 const progressFill = document.querySelector("#progress-fill");
 const questionStage = document.querySelector("#question-stage");
@@ -596,6 +597,26 @@ function renderIntroStats() {
   introStats.textContent = `${years[0]}년부터 ${years[years.length - 1]}년까지 읽은 ${books.length}권의 기록으로 추천을 만듭니다.`;
 }
 
+function renderIntroBackdrop() {
+  const sorted = [...books].sort((left, right) => Number(right.averageRating) - Number(left.averageRating));
+  const leftColumn = [...sorted.slice(0, 12), ...sorted.slice(0, 12)];
+  const rightColumn = [...sorted.slice(12, 24), ...sorted.slice(12, 24)];
+
+  const renderTrack = (items, side) => `
+    <div class="intro-track ${side}">
+      ${items.map((book) => `
+        <article class="intro-ghost-card">
+          <span>${book.year}</span>
+          <strong>${book.title}</strong>
+        </article>
+      `).join("")}
+    </div>
+  `;
+
+  introBackdrop.innerHTML = `${renderTrack(leftColumn, "left")}${renderTrack(rightColumn, "right")}`;
+}
+
+renderIntroBackdrop();
 renderIntroStats();
 resetExperience();
 startButton.addEventListener("click", startExperience);

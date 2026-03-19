@@ -51,6 +51,7 @@ body {
 .screen {
   height: 100%;
   padding: 32px;
+  position: relative;
 }
 
 .hidden {
@@ -67,10 +68,70 @@ body {
 }
 
 .intro-screen {
+  position: relative;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 24px;
   align-items: stretch;
+  overflow: hidden;
+}
+
+.intro-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.82;
+}
+
+.intro-track {
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  width: 34%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transform: rotate(-8deg);
+}
+
+.intro-track.left {
+  left: -2%;
+  animation: conveyor-up 28s linear infinite;
+}
+
+.intro-track.right {
+  right: -4%;
+  animation: conveyor-down 30s linear infinite;
+}
+
+.intro-ghost-card {
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.46);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(16px);
+}
+
+.intro-ghost-card strong,
+.intro-ghost-card span {
+  display: block;
+}
+
+.intro-ghost-card strong {
+  margin-top: 6px;
+  font-size: 0.96rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: rgba(25, 31, 40, 0.82);
+}
+
+.intro-ghost-card span {
+  font-size: 0.78rem;
+  color: rgba(25, 31, 40, 0.44);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .intro-copy,
@@ -85,6 +146,8 @@ body {
 }
 
 .intro-copy {
+  position: relative;
+  z-index: 2;
   padding: 34px;
   display: flex;
   flex-direction: column;
@@ -156,6 +219,8 @@ body {
 }
 
 .intro-card {
+  position: relative;
+  z-index: 2;
   padding: 28px;
   display: flex;
   flex-direction: column;
@@ -194,6 +259,8 @@ body {
 .question-head {
   max-width: 720px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .progress-meta {
@@ -238,6 +305,8 @@ body {
   max-width: 100%;
   height: calc(100% - 86px);
   margin: 24px auto 0;
+  position: relative;
+  z-index: 2;
 }
 
 .question-card {
@@ -538,6 +607,14 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .intro-backdrop {
+    opacity: 0.48;
+  }
+
+  .intro-track {
+    width: 58%;
+  }
+
   .question-card,
   .result-card,
   .intro-copy,
@@ -574,5 +651,23 @@ body {
 
   .result-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes conveyor-up {
+  from {
+    transform: translateY(0) rotate(-8deg);
+  }
+  to {
+    transform: translateY(-24%) rotate(-8deg);
+  }
+}
+
+@keyframes conveyor-down {
+  from {
+    transform: translateY(-20%) rotate(-8deg);
+  }
+  to {
+    transform: translateY(4%) rotate(-8deg);
   }
 }
