@@ -340,20 +340,20 @@
     var params = new URLSearchParams();
     params.set("step", String(step));
     if (answers.length) params.set("answers", answers.join(","));
-    return "/question.html?" + params.toString();
+    return BASE_PATH + "question.html?" + params.toString();
   }
 
   function buildResultHref(answers) {
     var params = new URLSearchParams();
     params.set("answers", answers.join(","));
-    return "/result.html?" + params.toString();
+    return BASE_PATH + "result.html?" + params.toString();
   }
 
   function getQuestionState(step, answers) {
     var found = findNodeByAnswers(answers);
     var node = found.node;
     if (!node) {
-      return { redirect: "/index.html" };
+      return { redirect: BASE_PATH + "index.html" };
     }
     if (node.type === "leaf") {
       return { redirect: buildResultHref(answers) };
@@ -370,7 +370,7 @@
   }
 
   function getResultState(answers) {
-    if (!answers.length) return { redirect: "/index.html" };
+    if (!answers.length) return { redirect: BASE_PATH + "index.html" };
     var found = findNodeByAnswers(answers);
     if (!found.node || found.node.type !== "leaf") {
       return { redirect: buildQuestionHref(found.trail.length, answers.slice(0, found.trail.length)) };
@@ -418,3 +418,4 @@
     buildNextHref: buildNextHref
   };
 }());
+  var BASE_PATH = "./";

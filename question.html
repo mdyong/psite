@@ -53,7 +53,7 @@
       }).join("");
 
       var backHref = state.step === 0
-        ? "/index.html"
+        ? "./index.html"
         : app.buildQuestionHref(state.step - 1, answers.slice(0, -1));
 
       root.innerHTML = '' +
