@@ -619,4 +619,11 @@ function renderIntroBackdrop() {
 renderIntroBackdrop();
 renderIntroStats();
 resetExperience();
-startButton.addEventListener("click", startExperience);
+startButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  startExperience();
+});
+startButton.onclick = (event) => {
+  event.preventDefault();
+  startExperience();
+};

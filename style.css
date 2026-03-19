@@ -74,11 +74,13 @@ body {
   gap: 24px;
   align-items: stretch;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .intro-backdrop {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
   opacity: 0.82;
@@ -148,6 +150,7 @@ body {
 .intro-copy {
   position: relative;
   z-index: 2;
+  pointer-events: auto;
   padding: 34px;
   display: flex;
   flex-direction: column;
@@ -201,6 +204,9 @@ body {
   background: var(--accent);
   color: white;
   box-shadow: 0 18px 34px rgba(49, 130, 246, 0.24);
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
 }
 
 .secondary-button {
@@ -221,6 +227,7 @@ body {
 .intro-card {
   position: relative;
   z-index: 2;
+  pointer-events: auto;
   padding: 28px;
   display: flex;
   flex-direction: column;
