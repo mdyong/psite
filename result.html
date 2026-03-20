@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>추천 결과 | P들의 서재</title>
-  <link rel="stylesheet" href="style.css?v=multi3">
+  <link rel="stylesheet" href="style.css?v=multi4">
 </head>
 <body class="result-body">
   <div class="page-shell">
@@ -14,7 +14,7 @@
   </div>
 
   <script src="books-data.js?v=20260319b"></script>
-  <script src="app-data.js?v=multi3"></script>
+  <script src="app-data.js?v=multi4"></script>
   <script>
     (function () {
       var app = window.BookMatchApp;
@@ -62,7 +62,8 @@
           '<div class="result-grid">' +
             '<div class="result-column">' +
               '<section class="result-module"><h3>이 책을 고른 이유</h3><ul><li>지금 고른 답변 흐름이 이 책이 속한 최종 분기와 맞닿았습니다.</li><li>' + book.summary + '</li><li>북클럽에서 남긴 평점과 한줄 평을 함께 반영했습니다.</li></ul></section>' +
-              '<section class="result-module"><h3>추천 코멘트</h3><p class="result-copy">지금 고른 흐름은 분위기와 대화 포인트가 비교적 분명합니다. 그래서 이 책처럼 결이 선명하고 북클럽 안에서 인상이 남았던 선택이 잘 맞습니다.</p></section>' +
+              '<section class="result-module"><h3>줄거리</h3><p class="result-copy">' + (book.premise || book.summary) + '</p></section>' +
+              '<section class="result-module"><h3>추천 코멘트</h3><p class="result-copy">장르와 줄거리, 북클럽 평점, 한줄 평을 함께 묶어 지금 취향과 가장 가까운 한 권으로 골랐습니다. 익숙한 만족감과 새로운 흥미 사이에서 지금의 답변이 가장 잘 붙는 책입니다.</p></section>' +
               '<section class="result-module"><h3>대표 한줄 평</h3><p class="result-quote">' + (book.topReview || "대표 한줄 평 준비 중입니다.") + '</p><p class="result-meta">' + (book.topReviewer ? book.topReviewer + ' · ' + Number(book.topRating).toFixed(1) + '점' : "") + '</p></section>' +
             '</div>' +
             '<div class="result-column">' +
