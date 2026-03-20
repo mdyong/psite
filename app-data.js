@@ -4,62 +4,72 @@
 
   var questionBlueprints = [
     {
-      title: "오늘 읽고 싶은 방식은 어느 쪽이야?",
-      description: "지금 가장 기대하는 독서 경험을 골라줘.",
+      title: "지금 가장 끌리는 책의 타입은 뭐야?",
+      description: "우리 책 목록을 크게 가르는 첫 갈래부터 골라줘.",
       options: [
-        { key: "A", emoji: "📚", title: "이야기에 몰입하고 싶어", copy: "인물과 관계를 따라가는 서사가 좋다", weights: { warm: 3, intimate: 2, comforting: 1, classic: 1 } },
-        { key: "B", emoji: "🧠", title: "생각이 확장됐으면 해", copy: "읽고 나서 관점이나 지식이 남는 책이 좋다", weights: { idea: 3, debate: 2, civic: 1, dense: 1 } },
-        { key: "C", emoji: "🚀", title: "새로운 설정이 궁금해", copy: "낯선 세계나 강한 콘셉트가 있는 책이 좋다", weights: { strange: 3, adventurous: 2, offbeat: 1, idea: 1 } }
+        { key: "A", emoji: "📖", title: "문학과 이야기", copy: "인물과 관계를 따라가는 서사가 좋다", weights: { literary: 3, comfort: 1, youth: 1, classic: 1 } },
+        { key: "B", emoji: "🧠", title: "에세이와 교양", copy: "생각과 정보, 관점이 남는 책이 좋다", weights: { essay: 3, reflective: 2, science: 1, art: 1 } },
+        { key: "C", emoji: "🛸", title: "SF와 스릴러", copy: "낯선 설정이나 강한 플롯이 좋다", weights: { speculative: 3, suspense: 2, literary: 1 } }
       ]
     },
     {
-      title: "가장 끌리는 무대는 어디야?",
-      description: "책이 펼쳐지는 세계의 결을 골라줘.",
+      title: "더 끌리는 무대는 어디야?",
+      description: "이야기가 펼쳐지는 세계의 결을 골라줘.",
       options: [
-        { key: "A", emoji: "🏠", title: "일상과 관계", copy: "현실적인 사람 이야기와 감정선이 좋다", weights: { intimate: 3, warm: 2, comforting: 1 } },
-        { key: "B", emoji: "🏛️", title: "사회와 역사", copy: "현실과 제도, 역사적 맥락이 있는 책이 좋다", weights: { civic: 3, debate: 2, sharp: 1 } },
-        { key: "C", emoji: "🪐", title: "낯선 세계", copy: "미래, 우주, 기묘한 설정이 있는 책이 좋다", weights: { strange: 3, adventurous: 2, offbeat: 1 } }
+        { key: "A", emoji: "🏠", title: "개인과 관계", copy: "가족, 사랑, 우정, 성장 같은 이야기가 좋다", weights: { comfort: 3, literary: 1, youth: 2, essay: 1 } },
+        { key: "B", emoji: "🏛️", title: "사회와 역사", copy: "제도, 시대, 공동체를 다루는 책이 좋다", weights: { social: 3, reflective: 1, literary: 1, suspense: 1 } },
+        { key: "C", emoji: "🌌", title: "과학과 낯선 세계", copy: "우주, 미래, 기묘한 세계관이 좋다", weights: { speculative: 3, science: 2, suspense: 1 } }
       ]
     },
     {
-      title: "읽고 나서 어떤 기분이 남았으면 해?",
-      description: "마지막 장을 덮은 뒤의 잔향을 골라줘.",
+      title: "다 읽고 어떤 게 남았으면 해?",
+      description: "책을 덮은 뒤 가장 크게 남았으면 하는 감각을 골라줘.",
       options: [
-        { key: "A", emoji: "🤍", title: "위로와 다정함", copy: "마음이 조금 정리되고 다정함이 남으면 좋다", weights: { comforting: 3, warm: 2, intimate: 1 } },
-        { key: "B", emoji: "💭", title: "생각할 거리", copy: "해석과 대화거리가 오래 남으면 좋다", weights: { debate: 3, idea: 2, dense: 1 } },
-        { key: "C", emoji: "⚡", title: "긴장과 충격", copy: "선명하고 강한 인상이 남으면 좋다", weights: { sharp: 3, haunting: 2, offbeat: 1 } }
+        { key: "A", emoji: "🤍", title: "위로와 온기", copy: "다정하고 오래 가는 위로가 남으면 좋다", weights: { comfort: 3, essay: 1, literary: 1 } },
+        { key: "B", emoji: "💭", title: "통찰과 사유", copy: "해석과 생각거리가 남으면 좋다", weights: { reflective: 3, social: 1, science: 1, literary: 1 } },
+        { key: "C", emoji: "⚡", title: "긴장과 여진", copy: "강하고 선명한 인상이 남으면 좋다", weights: { suspense: 3, speculative: 1, social: 1 } }
       ]
     },
     {
-      title: "더 끌리는 소재는 뭐야?",
-      description: "이야기 속에서 더 흥미로운 축을 골라줘.",
+      title: "더 오래 이야기하고 싶은 주제는 뭐야?",
+      description: "독서모임에서 특히 말이 길어질 만한 주제를 골라줘.",
       options: [
-        { key: "A", emoji: "🫂", title: "사람과 관계", copy: "사랑, 우정, 가족 같은 관계 서사가 좋다", weights: { intimate: 3, warm: 2, comforting: 1 } },
-        { key: "B", emoji: "🔬", title: "과학과 아이디어", copy: "과학적 상상력이나 관점 확장이 좋다", weights: { idea: 3, adventurous: 2, strange: 1 } },
-        { key: "C", emoji: "⚖️", title: "권력과 구조", copy: "사회 시스템과 윤리, 갈등 구조가 좋다", weights: { civic: 3, debate: 2, sharp: 1 } }
+        { key: "A", emoji: "🫂", title: "사람의 마음", copy: "관계, 사랑, 상처, 성장 이야기가 좋다", weights: { literary: 2, comfort: 2, youth: 1, reflective: 1 } },
+        { key: "B", emoji: "🔬", title: "지식과 아이디어", copy: "과학, 철학, 예술, 개념 이야기가 좋다", weights: { science: 2, reflective: 2, art: 2, essay: 1 } },
+        { key: "C", emoji: "⚖️", title: "구조와 윤리", copy: "제도, 권력, 사회 규칙 이야기가 좋다", weights: { social: 3, suspense: 1, speculative: 1, reflective: 1 } }
       ]
     },
     {
-      title: "읽는 체력은 어느 정도야?",
-      description: "지금 집중력에 맞는 밀도를 골라줘.",
+      title: "읽는 호흡은 어느 쪽이 좋아?",
+      description: "지금 집중력과 취향에 맞는 리듬을 골라줘.",
       options: [
-        { key: "A", emoji: "🍃", title: "가볍고 술술", copy: "빠르게 몰입되고 부담이 적은 책이 좋다", weights: { breezy: 3, warm: 1, crowd: 1 } },
-        { key: "B", emoji: "⚖️", title: "적당히 균형 있게", copy: "읽기 편하지만 생각할 거리도 있으면 좋다", weights: { idea: 2, classic: 1, intimate: 1, debate: 1 } },
-        { key: "C", emoji: "🪨", title: "진득하게 곱씹고 싶어", copy: "문장과 의미를 오래 붙잡는 책이 좋다", weights: { dense: 3, haunting: 1, sharp: 1 } }
+        { key: "A", emoji: "🍃", title: "술술 읽히는 편", copy: "빠르게 몰입되고 부담이 적은 책이 좋다", weights: { breezy: 3, comfort: 1, essay: 1 } },
+        { key: "B", emoji: "⚖️", title: "읽기 쉽지만 얕지 않게", copy: "재미와 생각이 같이 가면 좋다", weights: { literary: 1, reflective: 1, science: 1, social: 1, classic: 1 } },
+        { key: "C", emoji: "🪨", title: "진득하게 붙잡고 싶어", copy: "문장이나 구조를 천천히 곱씹고 싶다", weights: { dense: 3, literary: 1, reflective: 1, suspense: 1 } }
       ]
     },
     {
-      title: "오늘 더 끌리는 선택은 어느 쪽이야?",
-      description: "마지막으로 취향의 온도를 골라줘.",
+      title: "마지막으로, 오늘의 취향 온도는?",
+      description: "검증된 만족과 강한 취향 사이에서 골라줘.",
       options: [
-        { key: "A", emoji: "🍽️", title: "안정적으로 만족", copy: "반응이 좋고 실패 확률이 낮은 선택이 좋다", weights: { classic: 2, warm: 1, crowd: 3 } },
-        { key: "B", emoji: "🧪", title: "새롭고 신선하게", copy: "조금 낯설어도 궁금해지는 선택이 좋다", weights: { adventurous: 3, strange: 1, idea: 1 } },
-        { key: "C", emoji: "🎯", title: "취향 강하게", copy: "호불호가 있어도 기억에 남는 선택이 좋다", weights: { offbeat: 3, sharp: 1, niche: 3 } }
+        { key: "A", emoji: "🍽️", title: "좋다고 검증된 쪽", copy: "클럽에서 반응이 좋았던 책 쪽이 좋다", weights: { crowd: 3, comfort: 1, literary: 1, essay: 1 } },
+        { key: "B", emoji: "🧪", title: "새로운 결을 만나고 싶어", copy: "조금 새롭거나 뜻밖의 책이 좋다", weights: { speculative: 2, science: 1, art: 1, reflective: 1 } },
+        { key: "C", emoji: "🎯", title: "호불호 있어도 강한 책", copy: "강한 개성과 인상이 있는 책이 좋다", weights: { niche: 3, suspense: 2, speculative: 1 } }
       ]
     }
   ];
 
   var traitGroups = {
+    essay: ["에세이", "교양", "기록", "편지", "일상", "산문"],
+    literary: ["문학", "소설", "단편", "장편", "서사", "이야기", "문장"],
+    science: ["과학", "뇌", "심리", "천문", "생명", "우주", "과학자"],
+    social: ["정치", "역사", "사회", "민주주의", "제도", "권력", "국가"],
+    suspense: ["스릴러", "미스터리", "호러", "불쾌", "악마", "살인", "긴장"],
+    speculative: ["sf", "미래", "외계", "디스토피아", "상상", "기묘", "세계관"],
+    comfort: ["위로", "다정", "행복", "회복", "친절", "성장", "계절"],
+    reflective: ["철학", "사유", "질문", "해석", "관점", "의미", "생각"],
+    youth: ["청소년", "성장", "편지", "친구", "학교", "소년", "소녀"],
+    art: ["예술", "음악", "클래식", "화가", "그림", "창작", "라디오"],
     warm: ["행복", "위로", "다정", "회복", "마음", "사랑", "용기", "편안", "성장"],
     sharp: ["고통", "상실", "폭력", "범죄", "불쾌", "죽음", "악마", "가해자", "난해"],
     strange: ["우주", "외계", "sf", "과학", "식물", "디지몬", "상상", "프랑켄슈타인", "모험"],
@@ -260,6 +270,16 @@
     var average = Number(book.averageRating) || 0;
 
     return {
+      essay: countMatches(text, traitGroups.essay),
+      literary: countMatches(text, traitGroups.literary),
+      science: countMatches(text, traitGroups.science),
+      social: countMatches(text, traitGroups.social),
+      suspense: countMatches(text, traitGroups.suspense),
+      speculative: countMatches(text, traitGroups.speculative),
+      comfort: countMatches(text, traitGroups.comfort),
+      reflective: countMatches(text, traitGroups.reflective),
+      youth: countMatches(text, traitGroups.youth),
+      art: countMatches(text, traitGroups.art),
       warm: countMatches(text, traitGroups.warm),
       sharp: countMatches(text, traitGroups.sharp),
       strange: countMatches(text, traitGroups.strange),
